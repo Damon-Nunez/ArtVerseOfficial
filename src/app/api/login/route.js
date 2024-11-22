@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import pool from '../../db'; // Adjust the path if necessary
+import pool from '../../../db'; // Adjust the path to db.js as necessary
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const login = async (req) => {
+export async function POST(req) {
     try {
-        const { email, password } = await req.json(); // Extract JSON from the request body
+        const { email, password } = await req.json();
 
         if (!email || !password) {
             return new Response(JSON.stringify({ error: "Email and password are required." }), { status: 400 });
@@ -17,6 +17,11 @@ export const login = async (req) => {
         const user = queryResult.rows[0];
 
         if (user && await bcrypt.compare(password, user.password)) {
+            if (!process.env.JWT_SECRET) {
+                console.error('JWT_SECRET is not defined in environment variables.');
+                return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+            }
+
             const token = jwt.sign(
                 { userId: user.id, email: user.email },
                 process.env.JWT_SECRET,
@@ -31,4 +36,4 @@ export const login = async (req) => {
         console.error('Error during login:', err);
         return new Response(JSON.stringify({ error: "An error occurred during login." }), { status: 500 });
     }
-};
+}
