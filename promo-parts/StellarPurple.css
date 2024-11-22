@@ -1,0 +1,55 @@
+
+.backgroundL2, .backgroundR2 {
+    position: relative;
+    height: 50rem;
+    padding: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, 
+     white 0%,
+     #00c6ff 20%,  
+     #ff00c8 90%,    /* Soft Pink */
+     #2E004F 92%,   /* Deep Purple */
+     #5D00A2 95%,   /* Royal Purple */ 
+    #D1A6F4  100%  /* Pale Purple */
+    );
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+   box-shadow: 0 20px 30px rgba(255, 255, 255, 0.7);
+}
+.backgroundL2 {
+    background: linear-gradient(225deg, 
+    white 0%,
+    #00c6ff 20%,  
+    #ff00c8 90%,    /* Soft Pink */
+    #2E004F 92%,   /* Deep Purple */
+    #5D00A2 95%,   /* Royal Purple */ 
+   #D1A6F4  100%  /* Pale Purple */
+   );
+   box-shadow: 0 20px 30px rgba(255, 255, 255, 0.7);
+   padding-top:5rem;
+}
+
+
+.header {
+    font-size: 2rem; /* Adjust the font size as needed */
+    color: white; /* Set the text color */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); /* White glow */
+    display: flex;
+    justify-content: center;
+    padding-top:10rem;
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    /* font-family: 'Poppins', sans-serif; */
+}
+.text {
+    font-size:2.1rem;
+    color:white;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); /* White glow */
+    display:flex;
+    justify-content:center;
+    padding-top:1.2rem;
+    font-family: 'Poppins', sans-serif;
+    width:30rem;
+    margin:0 auto;
+}

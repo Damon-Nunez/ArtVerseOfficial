@@ -1,0 +1,114 @@
+/* StarryBackground.css */
+
+
+/* Background for Left and Right Columns */
+.backgroundL, .backgroundR {
+    position: relative;
+    height: 50rem;
+    padding: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, 
+    #0f0c29 0%,    /* Deep Navy Blue */
+    #302b63 2%,    /* Vibrant Purple */
+    #24243e 4%,    /* Bright Magenta */
+    #ff00c8 18%,    /* Soft Pink */
+    #00c6ff 80%,
+    white 100%   /* Electric Blue */
+    );
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color:transparent;
+    box-shadow: 0 20px 30px rgba(255, 255, 255, 0.7);
+    width: 100%;
+    overflow:hidden;
+    
+
+}
+.backgroundR {
+    background: linear-gradient(45deg, 
+    white  0%,    /* Deep Navy Blue */
+    #00c6ff 20%,    /* Vibrant Purple */
+    #ff00c8 83%,    /* Bright Magenta */   /* Soft Pink */
+    #302b63 95%,
+    #0f0c29 100%   /* Electric Blue */
+    );
+    box-shadow: 0 20px 30px rgba(255, 255, 255, 0.7);
+
+    position: relative;
+    width: 100%; /* Or specific width */
+    height: 50rem; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+.header {
+    font-size: 1.7rem; /* Adjust the font size as needed */
+    color: white; /* Set the text color */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); /* White glow */
+    display: flex;
+    justify-content: center;
+    
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    /* font-family: 'Poppins', sans-serif; */
+}
+.text {
+    font-size:1.8rem;
+    color:white;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); /* White glow */
+    display:flex;
+    justify-content:center;
+    padding-top:1.2rem;
+    font-family: 'Poppins', sans-serif;
+    width:30rem;
+    margin:0 auto;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s infinite ease-in-out alternate, drift 5s linear infinite;
+    opacity: 0.8;
+}
+
+.carousel img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* Keeps images inside their container */
+
+}
+
+/* Twinkle animation remains the same */
+@keyframes twinkle {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0.2;
+    }
+}
+
+/* New Drift animation */
+@keyframes drift {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-100px, 100px);
+    }
+}
+
+/* Positioning stars within the div */
+.star:nth-child(1) { top: 20%; left: 25%; animation-delay: 0s; }
+.star:nth-child(2) { top: 40%; left: 50%; animation-delay: 1s; }
+.star:nth-child(3) { top: 70%; left: 75%; animation-delay: 2s; }
+

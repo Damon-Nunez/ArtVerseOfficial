@@ -1,0 +1,63 @@
+/* Adjust the size and fit of carousel images */
+.carousel-item img {
+  max-height: 45rem; /* Adjust the height to fit your design */
+  width: 100%; /* Ensure the image spans the full width */
+  object-fit: cover; /* Ensures images are covered without distortion */
+  overflow: hidden; /* Ensures the image doesn't stretch */
+}
+
+/* Hover effect for carousel items */
+.carousel-item:hover {
+  transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Move the arrows down a bit and center them */
+.carousel-control-prev, 
+.carousel-control-next {
+  display: block;
+  position: absolute;
+  top: 50%; /* Move arrows to the middle vertically */
+  transform: translateY(-50%); /* Vertically center the arrows */
+  font-size: 3rem; /* Increase the size of the custom icons */
+  color: white !important;
+  z-index: 2;
+  opacity: 0.7; /* Slight opacity for the arrows */
+  transition: opacity 0.3s ease;
+}
+
+/* Hover effect to change arrow color and opacity */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  color: red !important;
+  font-size: 3.2rem; /* Slightly larger on hover */
+  opacity: 1; /* Full opacity on hover */
+}
+
+/* Hide the default Bootstrap control icons */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  display: none; /* Hide the default Bootstrap icons if not needed */
+}
+
+/* Customize the appearance of the indicators */
+.carousel-indicators li {
+  width: 1rem; /* Change the size of the dots */
+  height: 1rem; /* Change the size of the dots */
+  background-color: red; /* Change the default dot color */
+  border-radius: 50%; /* Keep them round */
+}
+
+.carousel-indicators .active {
+  background-color: aquamarine; /* Change the color of the active dot */
+}
+
+/* Optional: Hover effect on dots */
+.carousel-indicators li:hover {
+  background-color: rgba(255, 255, 255, 0.8); /* Change the color on hover */
+}
+
+
+/* Hover effect for indicators */
+.carousel-indicators li:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
