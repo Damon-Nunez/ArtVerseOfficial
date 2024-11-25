@@ -5,58 +5,76 @@ import Model from 'react-modal'
 import { useState } from 'react'
 import { FaRegCircleXmark } from "react-icons/fa6";
 import { Navigate, useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/router'; // Correct import
+import Modal from 'react-modal';
+
+Modal.setAppElement('#__next'); // Use your app's root element (e.g., '#root' or '#__next' for Next.js)
+
 
 import axios from 'axios'
 
 const PromoNavbar = () => {
-  const [visible,setVisible] = useState(false)
-  const [login,setLogin] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [login, setLogin] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-//   const navigate = useNavigate();
-
+  const router = useRouter(); // Initialize the router
+  
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('http://localhost:3000/api/v1/artists/', {
-            name: username,
-            email: email,
-            password: password
-        });
-        alert('Sign-up successful');
-        console.log(response.data);
-
-        // Assuming the token is in response.data.token
-        if (response.data.token) {
-            localStorage.setItem('authToken', response.data.token);
-            navigate('/profile')
-        } else {
-            console.error('No token in response');
-        }
+      const response = await axios.post('http://localhost:3000/api/artists/addArtist', {
+        name: username,
+        email: email,
+        password: password,
+      });
+  
+      if (response.status === 201 && response.data?.message) {
+        alert(response.data.message);
+        console.log('Response:', response.data);
+  
+        // Redirect without a token if it's not provided
+        router.push('/profile'); 
+      } else {
+        console.error('Unexpected response format:', response);
+        alert('Sign-up failed. Please try again.');
+      }
     } catch (error) {
-        console.error('Error during sign-up:', error);
+      if (error.response) {
+        console.error('Error response:', error.response);
+        alert(error.response.data.error || 'An error occurred during sign-up.');
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+        alert('No response from server. Please try again later.');
+      } else {
+        console.error('Error:', error.message);
+        alert('An error occurred. Please try again.');
+      }
     }
-};
+  };
+  
 
-
-const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('http://localhost:3000/api/v1/artists/login', {
-            email: email,
-            password: password 
-        });
-        alert('Login Successful');
-        // Assuming the token is in response.data.token, adjust if necessary
-        navigate('/profile')
-        localStorage.setItem('authToken', response.data.token); 
-        console.log("Logged in and token stored:", response.data.token);
-    } catch (error) {
-        console.error("Error during log-in:", error);
-    }
-};
+      const response = await axios.post('http://localhost:3000/api/login', {
+        email: email,
+        password: password,
+      });
+      alert('Login Successful');
 
+      if (response.data.token) {
+        localStorage.setItem('authToken', response.data.token);
+        router.push('/profile'); // Use router.push for navigation
+        console.log('Logged in and token stored:', response.data.token);
+      } else {
+        console.error('No token in response');
+      }
+    } catch (error) {
+      console.error('Error during log-in:', error);
+    }
+  };
   return (
 
     <div>
