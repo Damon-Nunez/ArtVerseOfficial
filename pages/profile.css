@@ -1,0 +1,120 @@
+/* Ensure the parent container covers the whole screen */
+.star-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Don't interfere with other elements */
+    z-index: -1; /* Place stars behind other content */
+}
+
+/* Star styling */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2s infinite ease-in-out alternate, drift 5s linear infinite;
+}
+
+/* Twinkle animation */
+@keyframes twinkle {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.8);
+        opacity: 0.2;
+    }
+}
+
+/* Drift animation */
+@keyframes drift {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-100px, 100px);
+    }
+}
+
+/* Profile Block Styling */
+.profileBlock {
+    position: relative; /* Allow children to be positioned relative to this */
+    text-align: center; /* Centers inline-block elements */
+    background: linear-gradient(120deg, 
+        #2C003E 0%,  /* Deep Space Purple */
+        #5A009D 25%, /* Galaxy Violet */
+        #FF007F 50%, /* Magenta Glow */
+        #FF85B3 75%, /* Stellar Pink */
+        #4F00FF 100% /* Nebula Blue */
+    );
+    background-size: 300% 300%;
+    animation: galaxyFlow 10s ease infinite;
+    z-index: 10; /* Ensure profile content stays above stars */
+}
+
+/* Keyframes for animation */
+@keyframes galaxyFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Profile Items */
+.profileItems {
+    height: 15rem;
+    width: 100%;
+    margin-top: 3rem;
+}
+
+/* Profile Text */
+.profileText {
+    display: flex;
+    justify-content: center;
+    padding: 0.6rem;
+    font-size: 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Social Media Icons */
+.profileSocialMedia {
+    height: 4rem;
+    width: auto;
+    display: inline-block;
+    margin: 0 1rem; /* Adjust spacing evenly between items */
+    vertical-align: middle; /* Ensures proper alignment */
+}
+
+/* Followers Section */
+.profileFollowers {
+    display: flex;
+    justify-content: space-evenly; /* Ensures even spacing around the items */
+    align-items: center; /* Aligns items vertically in the center if needed */
+    margin: 0 30rem; /* Centers the entire flex container */
+    width: auto; /* Ensures it spans the available space for spacing */
+    font-size: 1.4rem;
+}
+
+/* Profile Footer (Posts, Favorites, Bubbles) */
+.PFB {
+    border-bottom: 2px solid black;
+    padding: 2rem!important;
+}
+
+.PFBText {
+    background-color: #d3d3d3; /* Light gray background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 6px 27px; /* Slightly reduce padding */
+    width: auto;
+    margin: 0 7rem; /* Small horizontal margin */
+    margin-top: 1.8rem;
+    margin-right: 2rem;
+    display: inline-block; /* Keeps the elements inline while respecting padding */
+    text-align: center; /* Centers the text inside */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-size: 1.9rem; /* Adjust as needed */
+    color: #333; /* Darker text color for contrast */
+}
