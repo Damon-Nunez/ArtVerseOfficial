@@ -15,6 +15,7 @@ const PromoNavbar = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // State for error message
+  const [successMessage, setSuccessMessage] = useState(''); // New state for success message
   const router = useRouter(); // Initialize the router
 
   const handleSignUp = async (e) => {
@@ -45,6 +46,7 @@ const PromoNavbar = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Clear previous errors
+    setSuccessMessage(''); // Clear previous success messages
     try {
       const response = await axios.post('http://localhost:3000/api/login', {
         email: email,
@@ -53,7 +55,10 @@ const PromoNavbar = () => {
 
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
-        router.push('/profile'); 
+        setSuccessMessage('Login Successful..Entering the ArtVerse!'); // Set success message
+        setTimeout(() => {
+          router.push('/profile');
+        }, 1500); // Delay the routing for a moment to show success message
       } else {
         setErrorMessage('Login failed. Please try again.');
       }
@@ -102,6 +107,25 @@ const PromoNavbar = () => {
                   }}
                 >
                   {errorMessage}
+                </p>
+              )}
+
+              {/* Display Success Message */}
+              {successMessage && (
+                <p
+                  style={{
+                    color: 'green',
+                    fontSize: '14px',
+                    marginTop: '10px',
+                    marginBottom: '15px',
+                    fontWeight: 'bold',
+                    backgroundColor: '#e6ffe6',
+                    padding: '10px',
+                    border: '1px solid #d4fdd2',
+                    borderRadius: '5px',
+                  }}
+                >
+                  {successMessage}
                 </p>
               )}
 

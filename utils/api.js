@@ -19,3 +19,7 @@ export const fetchProfileData = async () => {
         return null;
     }
 };
+
+// utils/api.js
+
+  

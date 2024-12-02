@@ -65,7 +65,7 @@
 
 /* Profile Items */
 .profileItems {
-    height: 15rem;
+    height: 10rem;
     width: 100%;
     margin-top: 3rem;
 }
@@ -77,14 +77,15 @@
     padding: 0.6rem;
     font-size: 1.2rem;
     font-family: 'Montserrat', sans-serif;
+    color:white;
 }
 
 /* Social Media Icons */
 .profileSocialMedia {
-    height: 4rem;
+    height: 3rem;
     width: auto;
     display: inline-block;
-    margin: 0 1rem; /* Adjust spacing evenly between items */
+    margin: 0 2rem; /* Adjust spacing evenly between items */
     vertical-align: middle; /* Ensures proper alignment */
 }
 
@@ -96,16 +97,17 @@
     margin: 0 30rem; /* Centers the entire flex container */
     width: auto; /* Ensures it spans the available space for spacing */
     font-size: 1.4rem;
+    color:white;
 }
 
 /* Profile Footer (Posts, Favorites, Bubbles) */
 .PFB {
     border-bottom: 2px solid black;
-    padding: 2rem!important;
+    padding: 1.5rem!important;
 }
 
 .PFBText {
-    background-color: #d3d3d3; /* Light gray background */
+    background-color: black; /* Light gray background */
     border-radius: 10px; /* Rounded corners */
     padding: 6px 27px; /* Slightly reduce padding */
     width: auto;
@@ -116,5 +118,5 @@
     text-align: center; /* Centers the text inside */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     font-size: 1.9rem; /* Adjust as needed */
-    color: #333; /* Darker text color for contrast */
+    color: white; /* Darker text color for contrast */
 }
