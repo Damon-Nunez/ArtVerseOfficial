@@ -7,6 +7,7 @@ import { generateWhiteStars } from '../utils/generateWhiteStars';
 import { FaInstagram } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
+import axios from 'axios';
 
 function Profile() {
   const [profile, setProfile] = useState({ name: '', bio: '', profileImage: '', id: '' });
@@ -40,6 +41,23 @@ function Profile() {
   };
 
   // Upload new profile picture and update profile
+  const uploadProfileImage = async (file) => {
+    const formData = new FormData();
+    formData.append('image', file); // Make sure this matches the backend field name
+
+    try {
+      const response = await axios.post('/api/artists/uploadImage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error uploading image:', error.response ? error.response.data : error.message);
+      throw error;
+    }
+  };
+
   const handleUpload = async () => {
     if (!newProfileImage) {
       alert('Please select an image to upload.');
@@ -47,14 +65,14 @@ function Profile() {
     }
 
     try {
-      const response = await uploadProfileImage(newProfileImage, profile.id); // Pass userId for image upload
+      const response = await uploadProfileImage(newProfileImage);
 
       if (response.success) {
         // After successful upload, update the profile with the new image URL
         const updatedProfile = {
           name: profile.name,
           bio: profile.bio,
-          profile_image_url: response.url,  // Use 'url' from the response
+          profile_image_url: response.url, // Use 'url' from the response
         };
 
         // Call the update route to update the profile in the database

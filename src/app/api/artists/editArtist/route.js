@@ -1,58 +1,49 @@
-import { IncomingForm } from 'formidable';
 import { NextResponse } from 'next/server';
 import cloudinary from 'cloudinary';
-import pool from '../../../../db'; // Path to your DB connection
+import pool from '../../../../db';
 
 // Initialize Cloudinary
 cloudinary.config({
-  cloud_name: 'dxdiv4gim', // Replace with your Cloudinary cloud name
-  api_key: '334746135729688', // Replace with your Cloudinary API key
-  api_secret: 'B0hi8X0ekfD3rBY0DGo4uOLtg8w', // Replace with your Cloudinary API secret
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Handle the POST request for image upload
 export async function POST(req) {
-  // Initialize formidable form handler
-  const form = new IncomingForm();
+  try {
+    // Parse incoming form data
+    const formData = await req.formData();
+    const file = formData.get('file'); // The uploaded file
+    const artistId = formData.get('artistId'); // Artist ID from the form data
 
-  // Return a promise because formidable uses callbacks for parsing
-  return new Promise((resolve, reject) => {
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        console.error("Error parsing form:", err);
-        return resolve(NextResponse.json({ error: 'Image upload failed' }, { status: 500 }));
-      }
+    if (!file || !artistId) {
+      return NextResponse.json({ error: 'File and artist ID are required.' }, { status: 400 });
+    }
 
-      // Access the uploaded file (assuming it's under the 'file' field)
-      const uploadedFile = files.file[0];
-
-      // Upload the image to Cloudinary
-      try {
-        const uploadResponse = await cloudinary.v2.uploader.upload(uploadedFile.filepath, {
-          folder: 'ArtVerseImages', // Optionally, specify a folder for your images
-        });
-
-        // Get the image URL from Cloudinary response
-        const imageUrl = uploadResponse.secure_url;
-
-        // Now update the artist's profile image URL in the database
-        const { artistId, profile_image_url } = fields; // Get artistId and the new profile_image_url from form data
-
-        const updateArtist = `
-          UPDATE artists
-          SET profile_image_url = $1
-          WHERE id = $2
-        `;
-
-        // Update the database with the new image URL
-        await pool.query(updateArtist, [imageUrl, artistId]);
-
-        // Return the updated image URL as a response
-        return resolve(NextResponse.json({ url: imageUrl }, { status: 200 }));
-      } catch (uploadError) {
-        console.error("Cloudinary upload failed:", uploadError);
-        return resolve(NextResponse.json({ error: 'Image upload failed' }, { status: 500 }));
-      }
+    // Upload file to Cloudinary
+    const uploadResponse = await cloudinary.v2.uploader.upload(file, {
+      folder: 'ArtVerseImages',
     });
-  });
+
+    const imageUrl = uploadResponse.secure_url;
+
+    // Update the database with the new profile image URL
+    const updateArtistQuery = `
+      UPDATE artists
+      SET profile_image_url = $1
+      WHERE id = $2
+      RETURNING profile_image_url;
+    `;
+
+    const { rows } = await pool.query(updateArtistQuery, [imageUrl, artistId]);
+
+    if (rows.length === 0) {
+      return NextResponse.json({ error: 'Artist not found.' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, url: rows[0].profile_image_url }, { status: 200 });
+  } catch (error) {
+    console.error('Error handling profile image upload:', error);
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+  }
 }
