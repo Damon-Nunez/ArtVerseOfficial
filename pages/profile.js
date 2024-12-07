@@ -7,6 +7,7 @@ import { generateWhiteStars } from '../utils/generateWhiteStars';
 import { FaInstagram } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
+import { CldUploadWidget } from 'next-cloudinary';
 import axios from 'axios';
 
 function Profile() {
@@ -14,92 +15,93 @@ function Profile() {
   const [newProfileImage, setNewProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
 
-  // Fetch profile data on mount
   useEffect(() => {
     const loadProfile = async () => {
-      const data = await fetchProfileData();
-      if (data) {
-        setProfile({
-          name: data.name || '',
-          bio: data.bio || '',
-          profileImage: data.profile_image_url || '',
-          id: data.id || '', // Assuming ID is available in profile data
-        });
+      try {
+        const data = await fetchProfileData();
+        console.log('Fetched profile data:', data); // Log the profile data for debugging
+
+        if (data) {
+          setProfile({
+            name: data.name || '',
+            bio: data.bio || '',
+            profileImage: data.profile_image_url || '',  // Make sure profile_image_url is set correctly
+            id: data.id || '',
+          });
+        }
+      } catch (error) {
+        console.error('Error loading profile data:', error);
       }
     };
-
+  
     loadProfile();
   }, []);
 
-  // Handle file input change for profile picture upload
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  // Handle image selection and preview
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
     if (file) {
-      setNewProfileImage(file);
-      setPreviewImage(URL.createObjectURL(file)); // Preview the selected image
+      setPreviewImage(URL.createObjectURL(file));  // Preview image before upload
+      setNewProfileImage(file);  // Store the selected file
     }
   };
 
-  // Upload new profile picture and update profile
-  const uploadProfileImage = async (file) => {
-    const formData = new FormData();
-    formData.append('image', file); // Make sure this matches the backend field name
-
-    try {
-      const response = await axios.post('/api/artists/uploadImage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error uploading image:', error.response ? error.response.data : error.message);
-      throw error;
-    }
-  };
-
+  // Handle profile image upload and update the artist
   const handleUpload = async () => {
     if (!newProfileImage) {
-      alert('Please select an image to upload.');
+      console.error('No image selected.');
       return;
     }
 
     try {
-      const response = await uploadProfileImage(newProfileImage);
+      const formData = new FormData();
+      formData.append('file', newProfileImage);
+      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET); // Ensure preset is set correctly
 
-      if (response.success) {
-        // After successful upload, update the profile with the new image URL
-        const updatedProfile = {
-          name: profile.name,
-          bio: profile.bio,
-          profile_image_url: response.url, // Use 'url' from the response
-        };
+      // Upload the image to Cloudinary
+      const cloudinaryResponse = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, formData);
+      
+      // Get the uploaded image URL from Cloudinary
+      const imageUrl = cloudinaryResponse.data.secure_url;
+      console.log('Cloudinary upload successful, image URL:', imageUrl);  // Log the Cloudinary image URL
 
-        // Call the update route to update the profile in the database
-        const updateResponse = await fetch(`/api/artists/editArtist?id=${profile.id}`, {
-          method: 'PUT',
-          body: JSON.stringify(updatedProfile),
+      // Now, update the profile image URL in the database using the editArtist route
+      await updateProfileImage(imageUrl);
+
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
+
+  const updateProfileImage = async (imageUrl) => {
+    try {
+      // Get the JWT token from localStorage using the correct key
+      const token = localStorage.getItem('authToken');  // Use 'authToken' instead of 'token'
+  
+      if (!token) {
+        throw new Error('No token found');
+      }
+  
+      const response = await axios.post(
+        '/api/artists/editArtist',  // This is the route for editing the artist's profile
+        { profile_image_url: imageUrl },  // Send the image URL in the request body
+        {
           headers: {
-            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,  // Include the token in the Authorization header
           },
-        });
-
-        if (updateResponse.ok) {
-          setProfile((prev) => ({
-            ...prev,
-            profileImage: response.url,
-          }));
-          setNewProfileImage(null);
-          alert('Profile picture updated successfully!');
-        } else {
-          alert('Failed to update profile.');
         }
-      } else {
-        alert('Failed to upload profile picture. Please try again.');
+      );
+  
+      if (response.data.success) {
+        // Optionally, update the profile data after successful upload
+        console.log('Profile image updated successfully:', response.data.profile_image_url);
+        setProfile(prevProfile => ({
+          ...prevProfile,
+          profileImage: response.data.profile_image_url,
+        }));
       }
     } catch (error) {
-      console.error('Error uploading profile picture:', error);
-      alert('An error occurred while uploading your profile picture.');
+      console.error('Error uploading profile image:', error);
     }
   };
 
@@ -114,7 +116,7 @@ function Profile() {
             {/* Display Profile Picture */}
             <div className="profileImageWrapper">
               <img
-                src={previewImage || profile.profileImage || 'default-profile.png'} // Fallback to default image
+                src={profile.profileImage ? profile.profileImage : '/default-profile.png'}  // Fallback to default image if profileImage is not available
                 alt="Profile"
                 className="profileImage"
               />

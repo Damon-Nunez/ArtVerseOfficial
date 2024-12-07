@@ -23,8 +23,8 @@ export async function GET(request) {
     // Extract user ID from the decoded token
     const userId = decoded.userId;
 
-    // Query database for the user profile
-    const query = "SELECT id, name, email, age, dob, bio FROM artists WHERE id = $1";
+    // Query database for the user profile, including the profile image URL
+    const query = "SELECT id, name, email, age, dob, bio, profile_image_url FROM artists WHERE id = $1";
     const { rows } = await pool.query(query, [userId]);
 
     if (rows.length === 0) {
