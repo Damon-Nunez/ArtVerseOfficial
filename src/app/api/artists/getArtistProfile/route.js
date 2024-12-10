@@ -23,8 +23,25 @@ export async function GET(request) {
     // Extract user ID from the decoded token
     const userId = decoded.userId;
 
-    // Query database for the user profile, including the profile image URL
-    const query = "SELECT id, name, email, age, dob, bio, profile_image_url FROM artists WHERE id = $1";
+    // Query database for the user profile, including follower and following counts
+    const query = `
+      SELECT 
+        artists.id, 
+        artists.name, 
+        artists.email, 
+        artists.age, 
+        artists.dob, 
+        artists.bio, 
+        artists.profile_image_url,
+        COUNT(DISTINCT followers.follower_id) AS followers_count,
+        COUNT(DISTINCT following.followed_id) AS following_count
+      FROM artists
+      LEFT JOIN followers ON artists.id = followers.followed_id
+      LEFT JOIN followers AS following ON artists.id = following.follower_id
+      WHERE artists.id = $1
+      GROUP BY artists.id
+    `;
+
     const { rows } = await pool.query(query, [userId]);
 
     if (rows.length === 0) {

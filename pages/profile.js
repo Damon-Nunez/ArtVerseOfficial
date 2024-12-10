@@ -27,6 +27,8 @@ function Profile() {
             bio: data.bio || '',
             profileImage: data.profile_image_url || '',  // Make sure profile_image_url is set correctly
             id: data.id || '',
+            followers_count: data.followers_count,
+            following_count: data.following_count
           });
         }
       } catch (error) {
@@ -139,8 +141,9 @@ function Profile() {
 
             {/* Followers/Following */}
             <div className="profileFollowers">
-              <p>Followers:</p>
-              <p>Following:</p>
+            <p>Followers: {profile.followers_count}</p>
+            <p>Following: {profile.following_count}</p>
+
             </div>
 
             {/* Profile Sections */}
