@@ -7,6 +7,8 @@ import { generateWhiteStars } from '../utils/generateWhiteStars';
 import { FaInstagram } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
+import { LuPencilLine } from "react-icons/lu";
+
 import axios from 'axios';
 
 function Profile() {
@@ -190,8 +192,13 @@ function Profile() {
             </div>
 
             {/* Profile Info */}
-            <p className="profileText"><b>{profile.name}</b></p>
-            <p className="profileBio">{profile.bio}</p>
+            <div className="profileHeader">
+  <p className="profileText"><b>{profile.name}</b></p>
+  <LuPencilLine className="editButton" />
+</div>
+
+<p className="profileBio">{profile.bio}</p>
+
 
             {/* Social Media Icons */}
             <FaInstagram className="profileSocialMedia" />
@@ -233,14 +240,6 @@ function Profile() {
               {activeTab === 'bubbles' && <div>Showing Bubbles...</div>}
             </div>
           </div>
-        </Col>
-        <Col>
-        <p
-        style={{
-          display:"flex",
-          justifyContent:"center"
-        }}
-        > this is where the posts and shit will be</p>
         </Col>
       </Row>
     </div>

@@ -53,7 +53,7 @@
     );
     background-size: 300% 300%;
     animation: galaxyFlow 10s ease infinite;
-    height:40rem;
+    height:38rem;
     z-index: 10; /* Ensure profile content stays above stars */
 }
 
@@ -73,18 +73,19 @@
 
 /* Profile Text */
 .profileText {
-    display: flex;
-    justify-content: center;
-    padding: 0.6rem;
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-family: 'Montserrat', sans-serif;
+    margin-top:2.1rem;
     color:white;
+    border-bottom: 3px solid black;
+    width: min-content;
+
 }
 .profileBio {
     display: flex;
     justify-content: center;
     padding: 0.6rem;
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-family: 'Montserrat', sans-serif;
     color:white;
 }
@@ -93,7 +94,7 @@
     height: 3rem;
     width: auto;
     display: inline-block;
-    margin: 0 2rem; /* Adjust spacing evenly between items */
+    margin: 0 3rem; /* Adjust spacing evenly between items */
     vertical-align: middle; /* Ensures proper alignment */
     gap:0.6rem;
 }
@@ -103,7 +104,7 @@
     display: flex;
     justify-content: space-evenly; /* Ensures even spacing around the items */
     align-items: center; /* Aligns items vertically in the center if needed */
-    margin: 0 20rem; /* Centers the entire flex container */
+    margin: 2rem 20rem; /* Centers the entire flex container */
     width: auto; /* Ensures it spans the available space for spacing */
     font-size: 1.4rem;
     color:white;
@@ -247,6 +248,29 @@
   .tabContent {
     margin-top: 20px;
   }
+  .profileHeader {
+    display: flex;
+    align-items: center; /* Vertically aligns name and icon */
+    justify-content: center; /* Keeps them aligned to the left */
+    gap:5px;
+    padding:1.3rem;/* Adds space between the name and the pencil icon */
+  }
+  
+  .profileText {
+    margin: 0; /* Removes any margin around the name */
+  }
+  
+  .editButton {
+    cursor: pointer;
+    font-size: 20px; /* Adjust size as needed */
+    color: #7f7f7f; /* Default color for the pencil icon */
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .editButton:hover {
+    color: #4a90e2; /* Color change on hover */
+  }
+  
 
   
   
