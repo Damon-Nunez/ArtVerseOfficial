@@ -53,6 +53,7 @@
     );
     background-size: 300% 300%;
     animation: galaxyFlow 10s ease infinite;
+    height:40rem;
     z-index: 10; /* Ensure profile content stays above stars */
 }
 
@@ -75,11 +76,18 @@
     display: flex;
     justify-content: center;
     padding: 0.6rem;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-family: 'Montserrat', sans-serif;
     color:white;
 }
-
+.profileBio {
+    display: flex;
+    justify-content: center;
+    padding: 0.6rem;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    color:white;
+}
 /* Social Media Icons */
 .profileSocialMedia {
     height: 3rem;
@@ -87,6 +95,7 @@
     display: inline-block;
     margin: 0 2rem; /* Adjust spacing evenly between items */
     vertical-align: middle; /* Ensures proper alignment */
+    gap:0.6rem;
 }
 
 /* Followers Section */
@@ -94,7 +103,7 @@
     display: flex;
     justify-content: space-evenly; /* Ensures even spacing around the items */
     align-items: center; /* Aligns items vertically in the center if needed */
-    margin: 0 30rem; /* Centers the entire flex container */
+    margin: 0 20rem; /* Centers the entire flex container */
     width: auto; /* Ensures it spans the available space for spacing */
     font-size: 1.4rem;
     color:white;
@@ -102,12 +111,12 @@
 
 /* Profile Footer (Posts, Favorites, Bubbles) */
 .PFB {
-    border-bottom: 2px solid black;
     padding: 1.5rem!important;
 }
 
 .PFBText {
-    background-color: black; /* Light gray background */
+     /* Light gray background */
+     background-color: lightgray;
     border-radius: 10px; /* Rounded corners */
     padding: 6px 27px; /* Slightly reduce padding */
     width: auto;
@@ -118,5 +127,126 @@
     text-align: center; /* Centers the text inside */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     font-size: 1.9rem; /* Adjust as needed */
-    color: white; /* Darker text color for contrast */
+    color: black; /* Darker text color for contrast */
 }
+
+
+/* Wrapper for the profile image and actions */
+/* Wrapper for the profile image and actions */
+.profileImageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  /* Container for the profile image */
+  .profileImageContainer {
+    position: relative;
+    width: 150px; /* Adjust image size as needed */
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden; /* Ensures overlay stays within circular bounds */
+    border: 2px solid #ddd;
+    margin-top:3rem;
+  }
+  
+  /* Profile image */
+  .profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio */
+    border-radius: 50%;
+  }
+  
+  /* Overlay for hover */
+  .profileImageContainer .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent gray */
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease; /* Smooth transition */
+    cursor: pointer;
+  }
+  
+  /* Show overlay on hover */
+  .profileImageContainer:hover .overlay {
+    opacity: 1;
+  }
+  
+  /* File input styling */
+  .profileImageUpload {
+    display: none; /* Completely hide the file input */
+  }
+  
+  /* Upload button styling */
+  .uploadButton {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #6c63ff; /* Accent color */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .uploadButton:hover {
+    background-color: #5a54e8; /* Slightly darker shade on hover */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .profileFollowers {
+      margin: 0 2rem; /* Adjust for smaller screens */
+      font-size: 1.2rem;
+    }
+  
+    .profileImageContainer {
+      width: 120px; /* Smaller profile image for smaller screens */
+      height: 120px;
+    }
+  }
+
+
+  .tabContainer {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top:1.3rem;
+  }
+  
+  .tab {
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size:1.2rem;
+    color:white;
+    transition: transform 0.3s ease-in-out,
+  }
+
+  .tab:hover{
+    transform:scale(1.2rem)
+  }
+  
+  .tab.active {
+    color: #fff;
+    background-color: #6a1b9a; /* Purple */
+    border-radius: 5px;
+    font-size:1.5rem;
+  }
+  
+  .tabContent {
+    margin-top: 20px;
+  }
+
+  
+  

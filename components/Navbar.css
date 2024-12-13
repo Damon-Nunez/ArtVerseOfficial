@@ -15,26 +15,61 @@
   }
   
   .navItems {
-    font-size: 3rem; /* Increase icon size */
-
-  }
-  .navItemsChildren {
-    padding:1.2rem;
-
+    display: flex;
+    justify-content: space-around;  /* Space out the items evenly */
   }
   
-  .navItemsPt2 {
-    font-size: 3rem; /* Increase icon size for navItemsPt2 */
-    align-items: center; /* Align items to the right */
-    padding:1.2rem;
-    margin-bottom: 1rem;
+  .navItemsChildren {
+    display: flex;
+    align-items: center;  /* Align the icon and text vertically */
+    padding: 1.2rem;
+    height:1.2rem;
+    font-size: 3rem;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
   }
+  
+  .navItemsChildren:hover {
+    transform: scale(1.2);
+  }
+  
+  .navText {
+    display: none;  /* Hide text by default */
+    margin-left: 0.5rem;  /* Space between the icon and text */
+    font-size: 1.3rem;  /* Text size */
+  }
+  
+  .navItemsChildren:hover .navText {
+    display: inline;  /* Show the text on hover */
+  }
+  
   
   .navBlockPt2 {
     display: flex;
-    justify-content: flex-end; /* Push items to the right */
-    align-items: center;
+    justify-content: space-around;  /* Space out the items evenly */
   }
+  
+  .navItemsPt2 {
+    display: flex;
+    align-items: center;  /* Align the icon and text vertically */
+    padding: 1.2rem;
+    font-size: 3rem;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  .navItemsPt2:hover {
+    transform: scale(1.2);
+  }
+  
+  .navTextPt2 {
+    display: none;  /* Hide text by default */
+    margin-left: 0.5rem;  /* Space between the icon and text */
+    font-size: 1.3rem;  /* Text size */
+  }
+  
+  .navItemsPt2:hover .navTextPt2 {
+    display: inline;  /* Show the text on hover */
+  }
+  
   
   .searchBar {
     width: 30rem; /* Adjust width as needed */

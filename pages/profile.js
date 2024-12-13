@@ -7,13 +7,16 @@ import { generateWhiteStars } from '../utils/generateWhiteStars';
 import { FaInstagram } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
-import { CldUploadWidget } from 'next-cloudinary';
 import axios from 'axios';
 
 function Profile() {
   const [profile, setProfile] = useState({ name: '', bio: '', profileImage: '', id: '' });
   const [newProfileImage, setNewProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // New state for success message
+
+  // State to track the active tab
+  const [activeTab, setActiveTab] = useState('posts'); 
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -70,6 +73,10 @@ function Profile() {
       // Now, update the profile image URL in the database using the editArtist route
       await updateProfileImage(imageUrl);
 
+      // Clear the newProfileImage state and hide the button
+      setNewProfileImage(null);
+      setPreviewImage(''); // Optionally reset the preview
+
     } catch (error) {
       console.error('Error uploading image:', error);
     }
@@ -78,33 +85,47 @@ function Profile() {
   const updateProfileImage = async (imageUrl) => {
     try {
       // Get the JWT token from localStorage using the correct key
-      const token = localStorage.getItem('authToken');  // Use 'authToken' instead of 'token'
+      const token = localStorage.getItem('authToken'); // Use 'authToken' instead of 'token'
   
       if (!token) {
         throw new Error('No token found');
       }
   
       const response = await axios.post(
-        '/api/artists/editArtist',  // This is the route for editing the artist's profile
-        { profile_image_url: imageUrl },  // Send the image URL in the request body
+        '/api/artists/editArtist', // This is the route for editing the artist's profile
+        { profile_image_url: imageUrl }, // Send the image URL in the request body
         {
           headers: {
-            Authorization: `Bearer ${token}`,  // Include the token in the Authorization header
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
           },
         }
       );
   
       if (response.data.success) {
-        // Optionally, update the profile data after successful upload
+        // Update the profile data after successful upload
         console.log('Profile image updated successfully:', response.data.profile_image_url);
-        setProfile(prevProfile => ({
+  
+        setProfile((prevProfile) => ({
           ...prevProfile,
           profileImage: response.data.profile_image_url,
         }));
+  
+        // Set success message to inform the user
+        setSuccessMessage('Profile image uploaded successfully!');
+        
+        // Clear the message after a few seconds
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 3000); // Message disappears after 3 seconds
       }
     } catch (error) {
       console.error('Error uploading profile image:', error);
     }
+  };
+
+  // Handle tab click
+  const handleTabClick = (tab) => {
+    setActiveTab(tab); // Set active tab when clicked
   };
 
   return (
@@ -115,14 +136,52 @@ function Profile() {
           <div className="profileBlock">
             {generateWhiteStars(230, 'profilePageSeed')} {/* Adjust number of stars as needed */}
 
-            {/* Display Profile Picture */}
             <div className="profileImageWrapper">
-              <img
-                src={profile.profileImage ? profile.profileImage : '/default-profile.png'}  // Fallback to default image if profileImage is not available
-                alt="Profile"
-                className="profileImage"
+              <div className="profileImageContainer">
+                {/* Profile Image */}
+                <img
+                  src={previewImage || profile.profileImage || '/default-profile.png'} // Preview or fallback image
+                  alt="Profile"
+                  className="profileImage"
+                />
+
+                {/* Hover Overlay */}
+                <div
+                  className="overlay"
+                  onClick={() => document.querySelector('.profileImageUpload').click()}
+                >
+                  Change Image
+                </div>
+              </div>
+
+              {/* Hidden File Input */}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="profileImageUpload"
               />
-              <input type="file" accept="image/*" onChange={handleImageChange} className="profileImageUpload" />
+
+              {/* Success Message */}
+              {successMessage && (
+                <p
+                  style={{
+                    color: 'green',
+                    fontSize: '14px',
+                    marginTop: '10px',
+                    marginBottom: '15px',
+                    fontWeight: 'bold',
+                    backgroundColor: '#e6ffe6',
+                    padding: '10px',
+                    border: '1px solid #d4fdd2',
+                    borderRadius: '5px',
+                  }}
+                >
+                  {successMessage}
+                </p>
+              )}
+
+              {/* Upload Button */}
               {newProfileImage && (
                 <button onClick={handleUpload} className="uploadButton">
                   Upload
@@ -131,8 +190,8 @@ function Profile() {
             </div>
 
             {/* Profile Info */}
-            <p className="profileText">{profile.name}</p>
-            <p className="profileText">{profile.bio}</p>
+            <p className="profileText"><b>{profile.name}</b></p>
+            <p className="profileBio">{profile.bio}</p>
 
             {/* Social Media Icons */}
             <FaInstagram className="profileSocialMedia" />
@@ -141,18 +200,47 @@ function Profile() {
 
             {/* Followers/Following */}
             <div className="profileFollowers">
-            <p>Followers: {profile.followers_count}</p>
-            <p>Following: {profile.following_count}</p>
-
+              <p>Followers: {profile.followers_count}</p>
+              <p>Following: {profile.following_count}</p>
             </div>
 
-            {/* Profile Sections */}
-            <div className="PFB">
-              <p className="PFBText">Posts</p>
-              <p className="PFBText">Favorites</p>
-              <p className="PFBText">Bubbles</p>
+            {/* Profile Sections (Tabs) */}
+            <div className="tabContainer">
+              <div
+                className={`tab ${activeTab === 'posts' ? 'active' : ''}`}
+                onClick={() => handleTabClick('posts')}
+              >
+                Posts
+              </div>
+              <div
+                className={`tab ${activeTab === 'favorites' ? 'active' : ''}`}
+                onClick={() => handleTabClick('favorites')}
+              >
+                Favorites
+              </div>
+              <div
+                className={`tab ${activeTab === 'bubbles' ? 'active' : ''}`}
+                onClick={() => handleTabClick('bubbles')}
+              >
+                Bubbles
+              </div>
+            </div>
+
+            {/* Dynamic Content */}
+            <div className="tabContent">
+              {activeTab === 'posts' && <div>Showing Posts...</div>}
+              {activeTab === 'favorites' && <div>Showing Favorites...</div>}
+              {activeTab === 'bubbles' && <div>Showing Bubbles...</div>}
             </div>
           </div>
+        </Col>
+        <Col>
+        <p
+        style={{
+          display:"flex",
+          justifyContent:"center"
+        }}
+        > this is where the posts and shit will be</p>
         </Col>
       </Row>
     </div>

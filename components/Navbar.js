@@ -16,10 +16,20 @@ const Navbar = () => {
           <div className="navBlock">
             {/* Left-side navigation items */}
             <div className="navItems">
-              <GrStatusPlaceholder className="navItemsChildren" />
-              <MdOutlineExplore className="navItemsChildren" />
-              <FaPlusCircle className="navItemsChildren" />
-            </div>
+  <div className="navItemsChildren">
+    <GrStatusPlaceholder />
+    <span className="navText">Home</span>
+  </div>
+  <div className="navItemsChildren">
+    <MdOutlineExplore />
+    <span className="navText">Explore</span>
+  </div>
+  <div className="navItemsChildren">
+    <FaPlusCircle />
+    <span className="navText">Post</span>
+  </div>
+</div>
+
 
             {/* Search bar */}
             <input
@@ -40,10 +50,20 @@ const Navbar = () => {
 
             {/* Right-side navigation items */}
             <div className="navBlockPt2">
-              <FiMessageCircle className="navItemsPt2" />
-              <FaBell className="navItemsPt2" />
-              <FaPeopleGroup className="navItemsPt2" />
-            </div>
+  <div className="navItemsPt2">
+    <FiMessageCircle />
+    <span className="navTextPt2">Messages</span>
+  </div>
+  <div className="navItemsPt2">
+    <FaBell />
+    <span className="navTextPt2">Notifications</span>
+  </div>
+  <div className="navItemsPt2">
+    <FaPeopleGroup />
+    <span className="navTextPt2">Groups</span>
+  </div>
+</div>
+
           </div>
         </Col>
       </Row>

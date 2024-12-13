@@ -55,7 +55,7 @@ const PromoNavbar = () => {
 
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
-        setSuccessMessage('Login Successful..Entering the ArtVerse!'); // Set success message
+        setSuccessMessage('Entering the ArtVerse!'); // Set success message
         setTimeout(() => {
           router.push('/profile');
         }, 1500); // Delay the routing for a moment to show success message
@@ -86,10 +86,9 @@ const PromoNavbar = () => {
             <a href="#" onClick={() => setVisible(false)}>
               <FaRegCircleXmark className="XIcon" />
             </a>
-            <h1 className="ArtVerse">{login ? 'Hop back into the ArtVerse!' : 'Join the ArtVerse!'}</h1>
 
             <div className="card">
-              <h2>{login ? 'Log In' : 'Sign Up'}</h2>
+              <h2>{login ? 'Back into the ArtVerse!' : 'Join the ArtVerse!'}</h2>
 
               {/* Display Error Message */}
               {errorMessage && (
