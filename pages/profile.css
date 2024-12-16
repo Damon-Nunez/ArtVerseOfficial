@@ -53,7 +53,7 @@
     );
     background-size: 300% 300%;
     animation: galaxyFlow 10s ease infinite;
-    height:38rem;
+    height:42rem;
     z-index: 10; /* Ensure profile content stays above stars */
 }
 
@@ -68,12 +68,12 @@
 .profileItems {
     height: 10rem;
     width: 100%;
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
 /* Profile Text */
 .profileText {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
     margin-top:2.1rem;
     color:white;
@@ -85,18 +85,40 @@
     display: flex;
     justify-content: center;
     padding: 0.6rem;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-family: 'Montserrat', sans-serif;
     color:white;
 }
 /* Social Media Icons */
-.profileSocialMedia {
+.profileSocialMedia1 {
     height: 3rem;
     width: auto;
     display: inline-block;
     margin: 0 3rem; /* Adjust spacing evenly between items */
     vertical-align: middle; /* Ensures proper alignment */
     gap:0.6rem;
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+    border-radius:12px;
+    
+}
+.profileSocialMedia2 {
+  height: 3rem;
+  width: auto;
+  display: inline-block;
+  margin: 0 3rem; /* Adjust spacing evenly between items */
+  vertical-align: middle; /* Ensures proper alignment */
+  gap:0.6rem;
+  color:lightblue;
+  border-radius: 12px;
+}
+.profileSocialMedia3 {
+  height: 3rem;
+  width: auto;
+  display: inline-block;
+  margin: 0 3rem; /* Adjust spacing evenly between items */
+  vertical-align: middle; /* Ensures proper alignment */
+  gap:0.6rem;
+  color:red;
 }
 
 /* Followers Section */
