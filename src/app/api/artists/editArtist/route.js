@@ -71,29 +71,24 @@ export async function POST(req) {
     // Add the artistId as the final parameter
     updateValues.push(artistId);
 
-    console.log("Generated SQL query:", updateQuery);  // Debugging: See the generated query
+    console.log("Final query and values:", updateQuery, updateValues);
 
-    const { rows } = await pool.query(updateQuery, updateValues);
+    const result = await pool.query(updateQuery, updateValues);
 
-    if (rows.length === 0) {
-      return NextResponse.json({ error: 'Artist not found' }, { status: 404 });
+    if (result.rows.length === 0) {
+      return NextResponse.json({ error: 'Artist not found or no changes made' }, { status: 404 });
     }
 
-    // Return the updated profile information
+    console.log("Updated profile data:", result.rows[0]);
+
     return NextResponse.json({
       success: true,
-      profile: {
-        name: rows[0].name,
-        bio: rows[0].bio,
-        instagram_link: rows[0].instagram_link,
-        twitter_link: rows[0].twitter_link,
-        youtube_link: rows[0].youtube_link,
-        profile_image_url: rows[0].profile_image_url,
-      }
-    }, { status: 200 });
+      message: 'Profile updated successfully',
+      updatedProfile: result.rows[0],
+    });
 
   } catch (error) {
-    console.error('Error updating artist profile:', error);
+    console.error('Error updating profile:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

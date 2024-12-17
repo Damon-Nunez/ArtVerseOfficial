@@ -9,6 +9,7 @@ import { BsTwitterX } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
 import { LuPencilLine } from "react-icons/lu";
 import axios from 'axios';
+import EditProfileModal from '../utils/editProfileModule';
 
 function Profile() {
   const [profile, setProfile] = useState({
@@ -26,8 +27,10 @@ function Profile() {
   const [newProfileImage, setNewProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
   const [activeTab, setActiveTab] = useState('posts');
+  const [modalVisible, setModalVisible] = useState(false);
+
+  
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -56,6 +59,10 @@ function Profile() {
 
     loadProfile();
   }, []);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -198,9 +205,19 @@ function Profile() {
 
             <div className="profileHeader">
               <p className="profileText"><b>{profile.name}</b></p>
-              <LuPencilLine className="editButton" />
-            </div>
+               {/* Edit profile button */}
+      <LuPencilLine className="editButton" onClick={openModal} />
 
+{/* Show the modal if it's visible */}
+{modalVisible && (
+  <EditProfileModal
+    profile={profile}
+    setModalVisible={setModalVisible}
+    setProfile={setProfile}
+    setSuccessMessage={setSuccessMessage}
+  />
+)}
+            </div>
             <p className="profileBio">{profile.bio}</p>
 
             <div className="socialMediaIcons">
@@ -220,6 +237,7 @@ function Profile() {
                 </a>
               )}
             </div>
+            
 
             <div className="profileFollowers">
               <p>Followers: {profile.followers_count}</p>
