@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function PromoPage() {
   return (
     <div>
-      
+      {/* This is importing the front end code into what we see upon our first load */}
         <PromoNavbar />
         <AuroraBorealis />
         <StarryBackground />

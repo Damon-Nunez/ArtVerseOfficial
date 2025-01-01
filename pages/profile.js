@@ -12,6 +12,8 @@ import axios from 'axios';
 import EditProfileModal from '../utils/editProfileModule';
 
 function Profile() {
+  // A UseState Code that will later be used to fetch the data of our user. It remains blank until our other code triggers its activation and fills
+  // in the data from the back-end DataBase.
   const [profile, setProfile] = useState({
     name: '',
     bio: '',
@@ -24,14 +26,15 @@ function Profile() {
     youtube: ''
   });
 
-  const [newProfileImage, setNewProfileImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [activeTab, setActiveTab] = useState('posts');
-  const [modalVisible, setModalVisible] = useState(false);
+  // Many useState codes that also remain null or empty until another code triggers its activation and fill itself with something.
+  const [newProfileImage, setNewProfileImage] = useState(null); //State that controls the profile picture
+  const [previewImage, setPreviewImage] = useState(''); // State that controls what you see before uploading the profile picture
+  const [successMessage, setSuccessMessage] = useState(''); //State that controls a message that appears when a certain code is successful
+  const [activeTab, setActiveTab] = useState('posts'); // State that controls the tabs on the profile page that change based on what is written
+  const [modalVisible, setModalVisible] = useState(false); //State that controls a pop up for editing your profile
 
-  
-
+  //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
+  // After that if the data is available, it activates setProfile's effect and fills the empty data with the data fetched from fetchProfileData
   useEffect(() => {
     const loadProfile = async () => {
       try {
@@ -59,11 +62,13 @@ function Profile() {
 
     loadProfile();
   }, []);
-
+//A small code that controls whether the popup is visible or not. Right now it is not because it is set to true.
   const openModal = () => {
     setModalVisible(true);
   };
-
+//This code is responsible for when you are selecting a profile picture to use
+//Upon selection it will activate and then chain setPreviewImage to preview the image prior to upload
+// It will also chain setNewProfileImage and give it the value of that file which it needs.
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -72,13 +77,14 @@ function Profile() {
       setNewProfileImage(file);
     }
   };
-
+// A long and responsible code to handle the upload of an image into a 3rd party website cloudinary
+//82-86 shows us why we needed to give balue to newProfileImage with a file because if there is no value this code can not function...
   const handleUpload = async () => {
     if (!newProfileImage) {
       console.error('No image selected.');
       return;
     }
-  
+  //88-101 looks complicated but here's whats happening... 89-95 attempts to upload the image. It makes a form, appends the file that you selected to newProfileImage and then grabs the upload preset from our env file sort of like a url to send it to cloudinary
     try {
       console.log('Uploading image...');
       const formData = new FormData();
@@ -87,14 +93,16 @@ function Profile() {
   
       const cloudinaryResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, formData
+        //Then that form data combined with the env data for our cloudinary is then uploaded to cloudinary. Basically formData(Image) is sent to cloudinary and uploaded
       );
-  
+      // The imageUrl is created the cloudinarys response.
       const imageUrl = cloudinaryResponse.data.secure_url;
       console.log('Cloudinary upload successful, image URL:', imageUrl);
-  
+      
+      //once the url is grabbed it activates updatProfileImage and gives it that value, more on that below
       await updateProfileImage(imageUrl);
   
-      // Manually re-fetch profile data
+      // Manually re-fetch profile data and it reloads the site to live update this image
       const updatedData = await fetchProfileData();
       setProfile({
         ...profile,
@@ -110,6 +118,7 @@ function Profile() {
   
 
   const updateProfileImage = async (imageUrl) => {
+    // 122-126 gets our authToken inside of localStorage to sort of safeguard this process.
     try {
       const token = localStorage.getItem('authToken');
       if (!token) {
@@ -117,7 +126,8 @@ function Profile() {
       }
 
       console.log('Updating profile image with URL:', imageUrl);
-
+        // an important code that edits our artist and adds the profile picture url so the website remembers what we picked and can load it again.
+        // Also shows why we grabbbed the authToken because this process... is protected.
       const response = await axios.post(
         '/api/artists/editArtist', 
         { profile_image_url: imageUrl },
@@ -127,7 +137,8 @@ function Profile() {
       );
 
       console.log('Response from profile image update:', response.data);
-
+        // the rest of this code triggers SetProfile to add this new profileImage into our users profile front end wise to manipulate
+        // It then lets us know this and then activates the SetSuccessMessage to show this to our faces
       if (response.data.success) {
         setProfile((prevProfile) => ({
           ...prevProfile,
@@ -143,7 +154,7 @@ function Profile() {
       console.error('Error updating profile image:', error);
     }
   };
-
+  // A vague code right now that will make sense later
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
