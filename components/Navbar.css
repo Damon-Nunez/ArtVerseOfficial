@@ -85,6 +85,10 @@
     border-color: #ff00c8; /* Highlight border when focused */
     box-shadow: 0 0 5px rgba(255, 0, 200, 0.6); /* Subtle glow */
   }
-  
-
+  .custom-modal {
+    max-width: 80%; /* Adjust the percentage or use px for a fixed width */
+    width: 100%;
+    top:20%;
+    left:20%
+  }
   

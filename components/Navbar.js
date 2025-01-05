@@ -156,9 +156,12 @@ const Navbar = () => {
       </Row>
 
       {/* Modal for creating a post */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+      <Modal show={showModal} onHide={() => setShowModal(false)}
+         dialogClassName="custom-modal">
         <Modal.Header closeButton>
-          <Modal.Title>Create a Post</Modal.Title>
+          <Modal.Title>
+            Create a Post
+            </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
