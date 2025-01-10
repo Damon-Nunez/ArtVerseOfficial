@@ -18,21 +18,17 @@
   
   .feed-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
-    margin: 16px;
-  }
-  
-  .feed-item {
-    background-color: #fff;
-    border-radius: 13px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: min-content;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 16px; /* Space between grid items */
+    padding: 16px;
   }
   
   .feed-item img {
-    width: 100%; /* Ensure image fills the container width */
+    width: 100%; /* Make images responsive */
     height: auto;
+    border-radius: 8px; /* Optional: Rounded corners */
+    object-fit: cover; /* Ensure images fill the container */
   }
+
+  
   
