@@ -3,13 +3,6 @@
 .row {
     display: flex;
   }
-  
-  /* Sidebar styles */
-  .sidebar {
-    background-color: #f4f4f4; /* Optional: background for the sidebar */
-    height: 100vh; /* Full viewport height for sidebar */
-  }
-  
   /* Feed styles */
   .feed {
     padding: 20px;

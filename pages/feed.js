@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './feed.css';
 import Navbar from '../components/navbar';
+import {Row,Col} from 'react-bootstrap'
 
 const Feed = () => {
   const [posts, setPosts] = useState([]); // Store fetched posts
@@ -28,7 +29,11 @@ const Feed = () => {
 
   return (
     <div>
+      <Row>
+        <Col sm={2} md={2} lg={2}>
       <Navbar />
+      </Col>
+      <Col sm={10} md={10} lg={10}>
       <div className="feed-container">
         {loading ? (
           <p>Loading posts...</p> // Display while loading
@@ -40,6 +45,8 @@ const Feed = () => {
           ))
         )}
       </div>
+      </Col>
+      </Row>
     </div>
   );
 };
