@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './feed.css';
-import Navbar from '../components/navbar';
+import Navbar from '../components/Navbar';
 import {Row,Col} from 'react-bootstrap'
+import SearchBar from '../components/searchBar';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]); // Store fetched posts
@@ -27,8 +28,11 @@ const Feed = () => {
     fetchPosts();
   }, []);
 
+ 
+
   return (
     <div>
+      <SearchBar/>
       <Row>
         <Col sm={2} md={2} lg={2}>
       <Navbar />

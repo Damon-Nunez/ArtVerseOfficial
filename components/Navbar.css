@@ -146,6 +146,10 @@
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+    cursor:pointer;
+  }
+  .profileName {
+    cursor:hover;
   }
   
   .modalContent {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { FaHome, FaPlusCircle, FaBell } from 'react-icons/fa';
 import { MdOutlineExplore } from 'react-icons/md';
@@ -6,7 +6,7 @@ import { FiMessageCircle } from 'react-icons/fi';
 import { FaPeopleGroup } from 'react-icons/fa6';
 import { GrStatusPlaceholder } from 'react-icons/gr';
 import { useRouter } from 'next/router';
-
+import { fetchProfileData } from '../utils/api';
 import './navbar.css'; // Update this file to style your sidebar
 
 const Navbar = () => {
@@ -19,8 +19,38 @@ const Navbar = () => {
   const [visibility, setVisibility] = useState('public');
   const [base64Image, setBase64Image] = useState(null);
 
+     const [profile, setProfile] = useState({
+        name: '',
+        profileImage: '',
+      });
+
+         useEffect(() => {
+            const loadProfile = async () => {
+              try {
+                const data = await fetchProfileData();
+                console.log('Fetched profile data:', data);
+        
+                if (data) {
+                  console.log('Setting profile state with data:', data);
+                  setProfile({
+                    name: data.name || '',
+                    profileImage: data.profile_image_url || '',
+                  });
+                }
+              } catch (error) {
+                console.error('Error loading profile data:', error);
+              }
+            };
+        
+            loadProfile();
+          }, []);
+
   const navigateToFeed = () => {
     router.push('/feed');
+  };
+
+  const navigateToProfile = () => {
+    router.push('/profile');
   };
 
   const handleImageUpload = (e) => {
@@ -114,11 +144,14 @@ const Navbar = () => {
       {/* Make a fetch to the back end to get the profile picture and then to fetch the username as well so we can plug in the  */}
       <div className="sidebar-profile">
         <img
-          src="/images/default-profile.jpg" // Placeholder image
+          onClick={navigateToProfile}
+          src={profile.profileImage} // Placeholder image
           alt="Profile"
           className="profile-picture"
         />
-        <span>My Profile</span>
+        <span onClick={navigateToProfile}
+        className='profileName'
+        >{profile.name}</span>
       </div>
 
       {/* Modal for creating a post */}
