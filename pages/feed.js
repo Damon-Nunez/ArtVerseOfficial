@@ -32,12 +32,12 @@ const Feed = () => {
 
   return (
     <div>
-      <SearchBar/>
       <Row>
         <Col sm={2} md={2} lg={2}>
-      <Navbar />
+        <Navbar/>
       </Col>
       <Col sm={10} md={10} lg={10}>
+      <SearchBar/>
       <div className="feed-container">
         {loading ? (
           <p>Loading posts...</p> // Display while loading

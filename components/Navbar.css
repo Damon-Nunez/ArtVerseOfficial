@@ -190,3 +190,17 @@
         justify-content: center;
         gap:4rem;
     }  
+
+    /* CSS to center the modal */
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensure the modal is vertically centered */
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 500px; /* Limit the width if necessary */
+  margin: auto;
+}
