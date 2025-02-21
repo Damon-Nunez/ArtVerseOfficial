@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import Navbar from '../components/navbar';
+import { Row, Col, Container } from 'react-bootstrap';
+import Navbar from '../components/Navbar';
 import { fetchProfileData } from '../utils/api';
 import './profile.css';
 import { generateWhiteStars } from '../utils/generateWhiteStars';
@@ -10,6 +10,8 @@ import { FaYoutube } from "react-icons/fa";
 import { LuPencilLine } from "react-icons/lu";
 import axios from 'axios';
 import EditProfileModal from '../utils/editProfileModule';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function Profile() {
   // A UseState Code that will later be used to fetch the data of our user. It remains blank until our other code triggers its activation and fills
@@ -161,7 +163,8 @@ function Profile() {
 
   return (
     <div>
-      <Row>
+      
+      <Row className="gx-0">
         <Col sm={2} md={2} lg={2}>
          <Navbar />
          </Col>

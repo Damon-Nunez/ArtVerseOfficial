@@ -7,6 +7,7 @@ import { FaPeopleGroup } from 'react-icons/fa6';
 import { GrStatusPlaceholder } from 'react-icons/gr';
 import { useRouter } from 'next/router';
 import { fetchProfileData } from '../utils/api';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './navbar.css'; // Update this file to style your sidebar
 
 const Navbar = () => {
