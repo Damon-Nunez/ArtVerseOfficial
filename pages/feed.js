@@ -43,8 +43,8 @@ const Feed = () => {
               posts.map((post) => (
                 <div
                   className="feed-item"
-                  key={post.id}
-                  onClick={() => setSelectedPost(post.id)} // Open modal on click
+                  key={post.post_id}
+                  onClick={() => setSelectedPost(post.post_id)} // Open modal on click
                 >
                   <img src={post.content_url} alt={post.description || "Post"} />
                 </div>
