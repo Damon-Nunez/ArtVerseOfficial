@@ -26,7 +26,7 @@ export async function GET(request) {
     // Query database for the user profile, including follower, following counts, and social media links
     const query = `
       SELECT 
-        artists.id, 
+        artists.artist_id, 
         artists.name, 
         artists.email, 
         artists.age, 
@@ -39,10 +39,10 @@ export async function GET(request) {
         COUNT(DISTINCT followers.follower_id) AS followers_count,
         COUNT(DISTINCT following.followed_id) AS following_count
       FROM artists
-      LEFT JOIN followers ON artists.id = followers.followed_id
-      LEFT JOIN followers AS following ON artists.id = following.follower_id
-      WHERE artists.id = $1
-      GROUP BY artists.id
+      LEFT JOIN followers ON artists.artist_id = followers.followed_id
+      LEFT JOIN followers AS following ON artists.artist_id = following.follower_id
+      WHERE artists.artist_id = $1
+      GROUP BY artists.artist_id
     `;
 
     const { rows } = await pool.query(query, [userId]);

@@ -27,7 +27,7 @@ export async function POST(req) {
 
             // Create a JWT token for the authenticated user
             const token = jwt.sign(
-                { userId: user.id, email: user.email },
+                { userId: user.artist_id, email: user.email },
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );

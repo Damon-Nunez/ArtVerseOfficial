@@ -64,7 +64,7 @@ export async function POST(req) {
     const updateQuery = `
       UPDATE artists
       SET ${updateFields.join(', ')}
-      WHERE id = $${updateValues.length + 1}
+      WHERE artist_id = $${updateValues.length + 1}
       RETURNING name, bio, instagram_link, twitter_link, youtube_link, profile_image_url;
     `;
 

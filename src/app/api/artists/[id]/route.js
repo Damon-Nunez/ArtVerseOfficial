@@ -5,7 +5,7 @@ export const DELETE = async (req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const id = url.pathname.split('/').pop(); // Extract the last part of the URL
 
-    const artistId = parseInt(id, 10);  // Convert it to an integer.
+    const artistId = parseInt(artist_id, 10);  // Convert it to an integer.
     if (isNaN(artistId)) {
         return new Response(
             JSON.stringify({ error: "Invalid artist ID" }),
@@ -15,7 +15,7 @@ export const DELETE = async (req) => {
 
     // Proceed with the database query to delete the artist by the ID.
     try {
-        const result = await pool.query("DELETE FROM artists WHERE id = $1", [artistId]);
+        const result = await pool.query("DELETE FROM artists WHERE artist_id = $1", [artistId]);
 
         if (result.rowCount === 0) {
             return new Response(

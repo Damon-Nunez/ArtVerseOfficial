@@ -6,7 +6,7 @@ export async function DELETE(request, { params }) {
     const { post_id } = await params;
 
     // Define the query to delete the post by post_id
-    const query = 'DELETE FROM posts WHERE id = $1 RETURNING *';
+    const query = 'DELETE FROM posts WHERE post_id = $1 RETURNING *';
 
     // Execute the query with the post_id parameter
     const result = await pool.query(query, [post_id]);
