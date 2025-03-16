@@ -1,11 +1,10 @@
-
 import { NextResponse } from 'next/server';
 import pool from '../../../../db';
+import jwt from 'jsonwebtoken';
 
-export async function POST(req) {
+export async function DELETE(req)  {
     try {
-
-      //Authorization Code. This code decodes the token you put in and designates it as artist_id to know whos using this route
+         //Authorization Code. This code decodes the token you put in and designates it as artist_id to know whos using this route
       const authHeader = req.headers.get('authorization');
       if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -45,37 +44,34 @@ export async function POST(req) {
         if(results.rows.length === 0) {
             return NextResponse.json({ message: 'The post does not exist.'}, {status:404})
         }
-        
-        
-        //checking if already liked
         const checkLikeQuery = `
-         SELECT * FROM likes
-          WHERE artist_id = $1 AND post_id = $2;
-            `;
+        SELECT * FROM likes
+         WHERE artist_id = $1 AND post_id = $2;
+           `;
 
-        const result = await pool.query(checkLikeQuery, [artist_id, post_id]);
+       const result = await pool.query(checkLikeQuery, [artist_id, post_id]);
 
-            if (result.rows.length === 1) {
-              return NextResponse.json({ message: 'You have already liked this post.' }, { status: 400 });
+           if (result.rows.length === 0) {
+             return NextResponse.json({ message: 'You have not liked this post.' }, { status: 400 });
 }
-// actually inserting the likes
-const insertLike = `
-INSERT INTO likes (artist_id, post_id) 
-VALUES ($1, $2)
-ON CONFLICT (artist_id, post_id) DO NOTHING 
-RETURNING *`;
-
-    const insertResult = await pool.query(insertLike, [artist_id, post_id]);
-
-    if (insertResult.rows.length > 0) {
-        return NextResponse.json({ message: 'Post liked successfully!' }, { status: 201 });
-    } else {
-        return NextResponse.json({ message: 'Failed to like post.' }, { status: 500 });
-    }
         
+const deleteLikeQuery = `
+DELETE FROM likes
+WHERE artist_id = $1 AND post_id = $2
+RETURNING *;
+`;
+
+const deleteResult = await pool.query(deleteLikeQuery, [artist_id, post_id]);
+
+if (deleteResult.rowCount > 0) {
+return NextResponse.json({ message: "Like deleted successfully." }, { status: 200 });
+} else {
+return NextResponse.json({ message: "No like found to delete." }, { status: 404 });
+}
+
+
     } catch(error) {
         console.error("Error adding like", error);
         return NextResponse.json({ error:"Internal server error"}, {status:500});
     }
-
 }
