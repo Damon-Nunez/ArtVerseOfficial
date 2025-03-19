@@ -29,7 +29,7 @@ export async function POST(req) {
             const token = jwt.sign(
                 { userId: user.artist_id, email: user.email },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: '48h' }
             );
 
             return new Response(JSON.stringify({ token }), { status: 200 });
