@@ -29,7 +29,9 @@ export async function POST(req) {
     console.log('user_id:', user_id);
 
     // Check for missing fields in the request
-    const { image, description, tags, type } = await req.json();
+    const { image, description, tags, type, title } = await req.json();
+
+    console.log('Request body:', { image, description, tags, type, title });
 
     if (!image) {
       throw new Error('Image is required');
@@ -42,10 +44,12 @@ export async function POST(req) {
 
     // Upload the image to Cloudinary
     if (image.startsWith('data:image/')) {
+      console.log('Uploading image to Cloudinary...');
       const cloudinaryResponse = await cloudinary.v2.uploader.upload(image, {
         folder: 'artverse/posts',
       });
       content_url = cloudinaryResponse.secure_url;
+      console.log('Cloudinary Response:', cloudinaryResponse);
     } else if (image.startsWith('http://') || image.startsWith('https://')) {
       content_url = image;
     } else {
@@ -53,20 +57,20 @@ export async function POST(req) {
     }
 
     const query = `
-      INSERT INTO posts (user_id, content_url, description, tags, type)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO posts (user_id, title, content_url, description, tags, type)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
 
     const client = await pool.connect();
     try {
-      const result = await client.query(query, [user_id, content_url, description || null, formattedTags, type || 'public']);
+      const result = await client.query(query, [user_id, title, content_url, description || null, formattedTags, type || 'public']);
       return new Response(JSON.stringify(result.rows[0]), { status: 201 });
     } finally {
       client.release();
     }
   } catch (error) {
-    console.error('Error in createPost:', error.message);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    console.error('Error in createPost:', error.message || error);  // Log detailed error
+    return new Response(JSON.stringify({ error: error.message || error }), { status: 500 });
   }
 }
