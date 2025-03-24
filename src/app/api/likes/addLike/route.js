@@ -1,6 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import pool from '../../../../db';
+import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
     try {

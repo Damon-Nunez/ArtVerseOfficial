@@ -21,14 +21,11 @@ export const GET = async (req) => {
     const countLikesQuery = `SELECT COUNT(*) FROM likes WHERE post_id = $1`;
     const countResult = await pool.query(countLikesQuery, [post_id]);
 
-    // Return the count of likes
-    const likeCount = countResult.rows[0].count;
+    // Get the like count as a number
+    const likeCount = parseInt(countResult.rows[0].count, 10); // Ensure the result is a number
 
-    if (likeCount === '0') {
-      return NextResponse.json({ message: "No likes yet." }, { status: 200 });
-    }
-
-    return NextResponse.json({ likes: likeCount }, { status: 200 });
+    // If no likes, return 0
+    return NextResponse.json(likeCount, { status: 200 });
 
   } catch (error) {
     console.error("Error counting likes", error);
