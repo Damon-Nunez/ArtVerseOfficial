@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./postModal.css"; // Create a CSS file for styling
+import "./PostModal.css"; // Create a CSS file for styling
 import { CiHeart } from "react-icons/ci";
+import { CiSaveDown2 } from "react-icons/ci";
+
 
 const PostModal = ({ postId, onClose }) => {
   const [post, setPost] = useState(null);
@@ -112,20 +114,43 @@ const handleLike = async (postId) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose}>×</button>
         <div className="modal-body">
+          <div className="left-content">
           <img src={post.content_url} alt={post.title} className="modal-image" />
           <div className="modal-details">
             <h2>{post.title}</h2>
-            <p>{post.description}</p>
-            {/* Conditional Rendering for Likes */}
-            <p onClick={() => handleLike(postId)}>
-              <CiHeart style={{ color: isLiked ? 'red' : 'gray', cursor: 'pointer' }} />
-              {loadingLikes ? "Loading..." : likes} {/* Display likes when fetched, or Loading... while it's being fetched */}
-            </p>
-          </div>
+            <p className="postDescription">{post.description}</p>
+  
+            {/* Like Section */}
+            <div 
+              className="like-section flex items-center gap-5 cursor-pointer" 
+              onClick={() => !loadingLikes && handleLike(postId)}
+            >
+              <CiHeart 
+                style={{ 
+                  color: isLiked ? 'red' : 'gray', 
+                  cursor: loadingLikes ? 'not-allowed' : 'pointer', 
+                  fontSize: '1.5rem' 
+                }} 
+              />
+            
+
+              <span>
+                {loadingLikes ? "Loading..." : likes} 
+              </span>
+              <CiSaveDown2 />
+              </div>
+            </div>
+             </div>
+         
         </div>
+        <div className="right-section">
+              {/*Comment section */}
+              <p> testing the side </p>
+            </div>
       </div>
     </div>
   );
+  
 };
 
 export default PostModal;

@@ -20,7 +20,8 @@
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
   }
   
@@ -40,8 +41,10 @@
   }
   
   .modal-image {
-    width: 50%;
-    border-radius: 10px;
+    width: 100%; /* Make images responsive */
+    height: auto;
+    border-radius: 8px; /* Optional: Rounded corners */
+    object-fit: cover;
   }
   
   .modal-details {
@@ -55,4 +58,7 @@
   p {
     margin: 5px 0;
   }
-  
+ .postDescription {
+  font-size: 1.2rem;
+  font-family: sans-serif;
+ }
