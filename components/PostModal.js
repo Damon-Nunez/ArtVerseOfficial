@@ -13,6 +13,43 @@ const PostModal = ({ postId, onClose }) => {
   const [comments,setComments] = useState([])
   const [userProfile,setUserProfile] = useState(null)
   const [userId, setUserId] = useState(null)
+  const [newComment,setNewComment] = useState(null)
+
+
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) {
+      alert("Comment cannot be empty!");
+      return;
+    }
+  
+    const token = localStorage.getItem("authToken");
+  
+    if (!token) {
+      alert("You must be logged in to comment.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`/api/comments/addComment?id=${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ comment_text: newComment }),
+      });
+  
+      if (!response.ok) throw new Error("Failed to add comment");
+  
+      const newCommentData = await response.json(); // Assuming the response returns the new comment data
+      setComments([newCommentData, ...comments]); // Add the new comment to the top
+      setNewComment(""); // Clear the input
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+  
+  
 
 
   useEffect(() => {
@@ -211,8 +248,7 @@ const handleLike = async (postId) => {
               />
             ) : (
               <div className="default-profile-image">
-                <p>{comment.name[0]}</p> {/* Initial of the name */}
-              </div>
+            <p>{comment.name && comment.name[0]}</p>               </div>
             )}
             <p><strong>{comment.name}</strong></p>
           </div>
@@ -220,6 +256,16 @@ const handleLike = async (postId) => {
         </div>
       ))
     )}
+    <div className="commentBar">
+  <input
+    type="text"
+    placeholder="Write a comment..." // Guides the user
+    value={newComment} // Binds input value to state
+    onChange={(e) => setNewComment(e.target.value)} // Updates state on input
+  />
+  <button onClick={handleCommentSubmit}>Post</button>
+</div>
+
   </div>
 </div>
 
