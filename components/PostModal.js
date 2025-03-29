@@ -10,24 +10,68 @@ const PostModal = ({ postId, onClose }) => {
   const [likes, setLikes] = useState(0);
   const [loadingLikes, setLoadingLikes] = useState(true);
   const [isLiked, setLiked] = useState(false);
+  const [comments,setComments] = useState([])
+  const [userProfile,setUserProfile] = useState(null)
+  const [userId, setUserId] = useState(null)
+
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await fetch(`/api/posts/${postId}`);
         if (!response.ok) throw new Error("Failed to fetch post");
-
         const data = await response.json();
         setPost(data);
+        if (data && data.user_id) { // Check if post and user_id exist
+          setUserId(data.user_id);
+        }
       } catch (error) {
         console.error("Error fetching post:", error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchPost();
   }, [postId]);
+  
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(`api/artists/getArtistProfile?id=${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("authToken")}` // Add the token here
+          }
+        });
+        if(!response.ok) throw new Error("Failed to fetch user profiles");
+        const data = await response.json();
+        setUserProfile(data)
+      } catch(error) {
+        console.error("Error fetching profile:" , error);
+      }
+    };
+    if (userId) {
+      fetchUserProfile();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(`/api/comments/getCommentsFromPost?id=${postId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("authToken")}` // Add the token here
+          }
+        });
+        const data = await response.json();
+        setComments(data.comments || []);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+    fetchComments();
+ }, [postId]);
 
   useEffect(() => {
     const fetchLikes = async () => {
@@ -117,6 +161,13 @@ const handleLike = async (postId) => {
           <div className="left-content">
           <img src={post.content_url} alt={post.title} className="modal-image" />
           <div className="modal-details">
+            <div className="modal-user-details"> 
+              <img className="user-profile-image" 
+            src= {userProfile ? userProfile.profile_image_url : 'loading...'} 
+            ></img>
+            <h2 className="user-profile-name"> {userProfile ? userProfile.name : 'Loading...'}</h2>
+           
+            </div>
             <h2>{post.title}</h2>
             <p className="postDescription">{post.description}</p>
   
@@ -144,9 +195,35 @@ const handleLike = async (postId) => {
          
         </div>
         <div className="right-section">
-              {/*Comment section */}
-              <p> testing the side </p>
-            </div>
+  <div className="comments-section">
+    {comments.length === 0 ? (
+      <p>No comments yet. Be the first to comment!</p>
+    ) : (
+      comments.map((comment) => (
+        <div key={comment.comment_id} className="comment-item">
+          <div className="comment-header">
+            {/* Profile Image */}
+            {comment.profile_image_url ? (
+              <img
+                src={comment.profile_image_url}
+                alt={`${comment.name}'s profile`}
+                className="comment-profile-image"
+              />
+            ) : (
+              <div className="default-profile-image">
+                <p>{comment.name[0]}</p> {/* Initial of the name */}
+              </div>
+            )}
+            <p><strong>{comment.name}</strong></p>
+          </div>
+          <p>{comment.comment_text}</p>
+        </div>
+      ))
+    )}
+  </div>
+</div>
+
+
       </div>
     </div>
   );

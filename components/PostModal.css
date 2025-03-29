@@ -62,3 +62,59 @@
   font-size: 1.2rem;
   font-family: sans-serif;
  }
+
+ .comment-item {
+  margin-bottom: 15px; /* Adds spacing between each comment */
+}
+
+.comment-header {
+  display: flex;
+  align-items: center; /* Aligns the profile image and name vertically */
+  margin-bottom: 5px; /* Space between the header and the comment text */
+}
+
+.comment-profile-image  {
+  width: 40px; /* Adjust size of the profile image */
+  height: 40px; /* Adjust size of the profile image */
+  border-radius: 50%; /* Makes the profile image circular */
+  object-fit: cover; /* Ensures the image fits inside the circle */
+  margin-right: 10px; /* Space between profile image and name */
+}
+
+.default-profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Circular shape for default image */
+  background-color: gray; /* You can customize this */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px; /* Space between default profile and name */
+}
+
+.default-profile-image p {
+  color: white; /* White color for the initial letter */
+  font-size: 18px; /* Size of the initial letter */
+  font-weight: bold;
+}
+
+.comment-item p {
+  margin: 0; /* Remove default margin from <p> tags */
+}
+
+.modal-user-details {
+  display: flex;
+  align-items: center; /* Aligns the profile image and name horizontally */
+}
+
+.user-profile-image {
+  width: 40px; /* Adjust size of the profile image */
+  height: 40px; /* Adjust size of the profile image */
+  border-radius: 50%; /* Makes the profile image circular */
+  object-fit: cover; /* Ensures the image fits inside the circle */
+  margin-right: 10px; /* Space between profile image and name */
+}
+
+.user-profile-name {
+  font-size: 16px; /* Adjust size of the name */
+}
