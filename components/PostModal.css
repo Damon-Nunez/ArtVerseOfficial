@@ -27,13 +27,20 @@
   
   .close-btn {
     position: absolute;
-    top: 10px;
+    top: 5px;
     right: 15px;
-    font-size: 24px;
+    font-size: 35px;
     background: none;
     border: none;
     cursor: pointer;
-  }
+    transition: 0.1s;
+}
+
+.close-btn:hover {
+    transform: scale(1.1);
+    color: red;
+}
+
   
   .modal-body {
     display: block;
@@ -116,5 +123,6 @@
 }
 
 .user-profile-name {
-  font-size: 16px; /* Adjust size of the name */
+  font-size: 1.3rem;
+  margin-top:1rem; /* Adjust size of the name */
 }

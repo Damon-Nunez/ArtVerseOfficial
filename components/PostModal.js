@@ -173,7 +173,7 @@ const handleLike = async (postId) => {
   
             {/* Like Section */}
             <div 
-              className="like-section flex items-center gap-5 cursor-pointer" 
+              className="like-section flex items-center gap-10 cursor-pointer" 
               onClick={() => !loadingLikes && handleLike(postId)}
             >
               <CiHeart 
