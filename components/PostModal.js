@@ -213,7 +213,7 @@ const handleLike = async (postId) => {
               className="like-section flex items-center gap-10 cursor-pointer" 
               onClick={() => !loadingLikes && handleLike(postId)}
             >
-              <CiHeart 
+              <CiHeart className="heart"
                 style={{ 
                   color: isLiked ? 'red' : 'gray', 
                   cursor: loadingLikes ? 'not-allowed' : 'pointer', 
@@ -256,7 +256,9 @@ const handleLike = async (postId) => {
         </div>
       ))
     )}
-    <div className="commentBar">
+
+  </div>
+  <div className="commentBar">
   <input
     type="text"
     placeholder="Write a comment..." // Guides the user
@@ -265,8 +267,6 @@ const handleLike = async (postId) => {
   />
   <button onClick={handleCommentSubmit}>Post</button>
 </div>
-
-  </div>
 </div>
 
 
