@@ -1,25 +1,23 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const fetchProfileData = async () => {
+export const fetchProfileData = async (artistId = null) => {
     try {
-        const token = localStorage.getItem('authToken'); // Get the token from localStorage
-        if (!token) {
-            throw new Error('No authentication token found');
-        }
+        const token = localStorage.getItem('authToken');
+        if (!token) throw new Error('No authentication token found');
 
-        const response = await axios.get('http://localhost:3000/api/artists/getArtistProfile', {
+        const endpoint = artistId 
+            ? `/api/artists/getArtistProfile?id=${artistId}`  // Corrected to use the artistId in the URL
+            : '/api/artists/getArtistProfile';              // No ID, fetch the current user's profile
+
+        const response = await axios.get(endpoint, {
             headers: {
-                Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                Authorization: `Bearer ${token}`,
             },
         });
 
-        return response.data; // Return the profile data if successful
+        return response.data;
     } catch (error) {
         console.error('Error fetching profile data:', error.response?.data || error.message);
         return null;
     }
 };
-
-// utils/api.js
-
-  

@@ -4,7 +4,9 @@ import jwt from 'jsonwebtoken';
 
 export async function GET(request) {
   try {
-    // Extract token from Authorization header
+    const { searchParams } = new URL(request.url);
+    const idFromQuery = searchParams.get('id');
+
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ message: 'Authorization token missing or invalid.' }, { status: 401 });
@@ -12,18 +14,22 @@ export async function GET(request) {
 
     const token = authHeader.split(' ')[1];
 
-    // Verify the token
     let decoded;
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure JWT_SECRET is set in .env
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
       return NextResponse.json({ message: 'Invalid or expired token.' }, { status: 403 });
     }
 
-    // Extract user ID from the decoded token
-    const userId = decoded.userId;
+    const loggedInUserId = decoded.userId;
 
-    // Query database for the user profile, including follower, following counts, and social media links
+    // Choose the id: from query if available, otherwise the logged-in user's id
+    const targetArtistId = idFromQuery ? parseInt(idFromQuery, 10) : loggedInUserId;
+
+    if (isNaN(targetArtistId)) {
+      return NextResponse.json({ message: 'Invalid artist ID.' }, { status: 400 });
+    }
+
     const query = `
       SELECT 
         artists.artist_id, 
@@ -45,16 +51,16 @@ export async function GET(request) {
       GROUP BY artists.artist_id
     `;
 
-    const { rows } = await pool.query(query, [userId]);
+    const { rows } = await pool.query(query, [targetArtistId]);
 
     if (rows.length === 0) {
       return NextResponse.json({ message: 'Artist not found.' }, { status: 404 });
     }
 
-    // Return the artist profile data, including social media links
     return NextResponse.json(rows[0], { status: 200 });
   } catch (error) {
     console.error('Error fetching artist profile:', error);
     return NextResponse.json({ message: 'Error fetching profile.' }, { status: 500 });
   }
 }
+
