@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./PostModal.css"; // Create a CSS file for styling
 import { CiHeart } from "react-icons/ci";
 import { CiSaveDown2 } from "react-icons/ci";
+import Link from "next/link";
 
 
 const PostModal = ({ postId, onClose }) => {
@@ -250,7 +251,11 @@ const handleLike = async (postId) => {
               <div className="default-profile-image">
             <p>{comment.name && comment.name[0]}</p>               </div>
             )}
-            <p><strong>{comment.name}</strong></p>
+            <Link href={`/profile?id=${comment.artist_id}`}>
+  <strong>{comment.name}</strong>
+</Link>
+
+
           </div>
           <p>{comment.comment_text}</p>
         </div>

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import Navbar from '../components/Navbar';
@@ -37,10 +38,14 @@ function Profile() {
 
   //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
   // After that if the data is available, it activates setProfile's effect and fills the empty data with the data fetched from fetchProfileData
+  const router = useRouter();
+  const { id } = router.query;  // Get the id from the URL
+
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        const data = await fetchProfileData();
+        // Pass the `id` (or undefined for current user's profile)
+        const data = await fetchProfileData(id || null);  // If no id, fetch current user's profile
         console.log('Fetched profile data:', data);
 
         if (data) {
@@ -62,8 +67,11 @@ function Profile() {
       }
     };
 
-    loadProfile();
-  }, []);
+    // Only run when the router is ready (use router.query safely)
+    if (router.isReady) {
+      loadProfile();
+    }
+  }, [id, router.isReady]);  // Make sure to watch for changes in `id` and router readiness
 //A small code that controls whether the popup is visible or not. Right now it is not because it is set to true.
   const openModal = () => {
     setModalVisible(true);
@@ -294,3 +302,4 @@ function Profile() {
 }
 
 export default Profile;
+
