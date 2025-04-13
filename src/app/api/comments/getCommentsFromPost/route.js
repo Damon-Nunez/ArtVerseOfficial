@@ -45,10 +45,11 @@ export const GET = async(req) => {
               }
 
               const getCommentDetailsQuery = `
-              SELECT comments.comment_id, comments.comment_text, artists.name, artists.profile_image_url
-FROM comments
-JOIN artists ON comments.artist_id = artists.artist_id
-WHERE comments.post_id = $1;
+              SELECT c.comment_id, c.comment_text, c.artist_id, u.name, u.profile_image_url
+FROM comments c
+JOIN artists u ON c.artist_id = u.artist_id
+WHERE c.post_id = $1
+
               `;
 
               const result = await pool.query(getCommentDetailsQuery, [post_id]);

@@ -1,0 +1,267 @@
+/* Ensure the parent container covers the whole screen */
+.star-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Don't interfere with other elements */
+    z-index: -1; /* Place stars behind other content */
+}
+
+/* Star styling */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2s infinite ease-in-out alternate, drift 5s linear infinite;
+}
+
+/* Twinkle animation */
+@keyframes twinkle {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.8);
+        opacity: 0.2;
+    }
+}
+
+/* Drift animation */
+@keyframes drift {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-100px, 100px);
+    }
+}
+
+/* Profile Block Styling */
+.profileBlock {
+    text-align: center; /* Centers inline-block elements */
+    background: linear-gradient(120deg, 
+        #2C003E 0%,  /* Deep Space Purple */
+        #5A009D 25%, /* Galaxy Violet */
+        #FF007F 50%, /* Magenta Glow */
+        #FF85B3 75%, /* Stellar Pink */
+        #4F00FF 100% /* Nebula Blue */
+    );
+    background-size: 300% 300%;
+    animation: galaxyFlow 10s ease infinite;
+    height:100%;
+    z-index: 10; /* Ensure profile content stays above stars */
+}
+/* Keyframes for animation */
+@keyframes galaxyFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Profile Items */
+.profileItems {
+    height: 10rem;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+/* Profile Text */
+.profileText {
+    font-size: 2.5rem;
+    font-family: 'Montserrat', sans-serif;
+    margin-top:2.1rem;
+    color:white;
+    border-bottom: 3px solid black;
+    width: min-content;
+
+}
+.profileBio {
+    display: flex;
+    justify-content: center;
+    padding: 0.6rem;
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    color:white;
+}
+/* Social Media Icons */
+.profileSocialMedia1 {
+    height: 3rem;
+    width: auto;
+    display: inline-block;
+    margin: 0 3rem; /* Adjust spacing evenly between items */
+    vertical-align: middle; /* Ensures proper alignment */
+    gap:0.6rem;
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+    border-radius:12px;
+    
+}
+.profileSocialMedia2 {
+  height: 3rem;
+  width: auto;
+  display: inline-block;
+  margin: 0 3rem; /* Adjust spacing evenly between items */
+  vertical-align: middle; /* Ensures proper alignment */
+  gap:0.6rem;
+  color:lightblue;
+  border-radius: 12px;
+}
+.profileSocialMedia3 {
+  height: 3rem;
+  width: auto;
+  display: inline-block;
+  margin: 0 3rem; /* Adjust spacing evenly between items */
+  vertical-align: middle; /* Ensures proper alignment */
+  gap:0.6rem;
+  color:red;
+}
+
+/* Followers Section */
+.profileFollowers {
+    display: flex;
+    justify-content: space-evenly; /* Ensures even spacing around the items */
+    align-items: center; /* Aligns items vertically in the center if needed */
+    margin: 2rem 20rem; /* Centers the entire flex container */
+    width: auto; /* Ensures it spans the available space for spacing */
+    font-size: 1.4rem;
+    color:white;
+}
+
+/* Profile Footer (Posts, Favorites, Bubbles) */
+.PFB {
+    padding: 1.5rem!important;
+}
+
+.PFBText {
+     /* Light gray background */
+     background-color: lightgray;
+    border-radius: 10px; /* Rounded corners */
+    padding: 6px 27px; /* Slightly reduce padding */
+    width: auto;
+    margin: 0 7rem; /* Small horizontal margin */
+    margin-top: 1.8rem;
+    margin-right: 2rem;
+    display: inline-block; /* Keeps the elements inline while respecting padding */
+    text-align: center; /* Centers the text inside */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-size: 1.9rem; /* Adjust as needed */
+    color: black; /* Darker text color for contrast */
+}
+
+
+/* Wrapper for the profile image and actions */
+/* Wrapper for the profile image and actions */
+.profileImageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  /* Container for the profile image */
+  .profileImageContainer {
+    position: relative;
+    width: 150px; /* Adjust image size as needed */
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden; /* Ensures overlay stays within circular bounds */
+    border: 2px solid #ddd;
+    margin-top:3rem;
+  }
+  
+  /* Profile image */
+  .profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio */
+    border-radius: 50%;
+  }
+  
+  /* Overlay for hover */
+  .profileImageContainer .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent gray */
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease; /* Smooth transition */
+    cursor: pointer;
+  }
+  
+  /* Show overlay on hover */
+  .profileImageContainer:hover .overlay {
+    opacity: 1;
+  }
+  
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .profileFollowers {
+      margin: 0 2rem; /* Adjust for smaller screens */
+      font-size: 1.2rem;
+    }
+  
+    .profileImageContainer {
+      width: 120px; /* Smaller profile image for smaller screens */
+      height: 120px;
+    }
+  }
+
+
+  .tabContainer {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top:1.3rem;
+  }
+  
+  .tab {
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size:1.2rem;
+    color:white;
+    transition: transform 0.3s ease-in-out,
+  }
+
+  .tab:hover{
+    transform:scale(1.2rem)
+  }
+  
+  .tab.active {
+    color: #fff;
+    background-color: #6a1b9a; /* Purple */
+    border-radius: 5px;
+    font-size:1.5rem;
+  }
+  
+  .tabContent {
+    margin-top: 20px;
+  }
+  .profileHeader {
+    display: flex;
+    align-items: center; /* Vertically aligns name and icon */
+    justify-content: center; /* Keeps them aligned to the left */
+    gap:5px;
+    padding:1.3rem;/* Adds space between the name and the pencil icon */
+  }
+  
+  .profileText {
+    margin: 0; /* Removes any margin around the name */
+  }
+
+  .col-lg-10{
+    padding:0px;
+  }
+  

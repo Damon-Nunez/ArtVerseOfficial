@@ -251,9 +251,10 @@ const handleLike = async (postId) => {
               <div className="default-profile-image">
             <p>{comment.name && comment.name[0]}</p>               </div>
             )}
-            <Link href={`/profile?id=${comment.artist_id}`}>
+            <Link href={`/users/${comment.artist_id}`}>
   <strong>{comment.name}</strong>
 </Link>
+
 
 
           </div>
