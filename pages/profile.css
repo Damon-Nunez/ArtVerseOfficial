@@ -293,4 +293,36 @@
   .col-lg-10{
     padding:0px;
   }
+  .bubbleGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 10px;
+    padding:20px;
+    
+  }
+  .createBubbleCard {
+    background-color: rgb(233, 232, 232);
+    border-radius: 25px;
+    font-weight: bold;
+    width: 220px;
+    height: 220px;
+    transition: 0.2s;
+  
+    /* Flexbox magic to center content */
+    display: flex;
+    justify-content: center; /* Horizontally */
+    align-items: center;     /* Vertically */
+  }
+  .createBubbleCard:hover{
+    transform: scale(1.05);
+    background-color: rgb(210, 210, 210);  /* Darker shade on hover */
+    cursor: pointer;
+  }
+.addBubble {
+  height: 30px;
+  width: 30px;
+};
+
+  
+  
   

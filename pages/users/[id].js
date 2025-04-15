@@ -131,7 +131,9 @@ export default function PublicProfile() {
                     className={`tab ${activeTab === 'bubbles' ? 'active' : ''}`}
                     onClick={() => handleTabClick('bubbles')}
                   >
-                    Bubbles
+                    <div className='bubbleGrid'>
+                      <h1> This is where the cards will be</h1>
+                    </div>
                   </div>
                 </div>
     

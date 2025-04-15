@@ -12,6 +12,8 @@ import { LuPencilLine } from "react-icons/lu";
 import axios from 'axios';
 import EditProfileModal from '../utils/editProfileModule';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaPlus } from "react-icons/fa";
+import BubbleModal from '../components/BubbleModal';
 
 
 function Profile() {
@@ -29,13 +31,56 @@ function Profile() {
     youtube: ''
   });
 
+  const handleCreateBubble = async ({ title, description, isPublic }) => {
+    try {
+
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        console.error("Token is missing!");
+        return;
+      }
+      console.log("Submitting:", { title, description, isPublic });
+
+      const res = await fetch('/api/bubbles/createBubble', {
+        method: 'POST', // For creating new data
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          is_public: isPublic,
+        }),
+        
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to create bubble');
+      }
+  
+      const data = await res.json();
+      console.log('Bubble created:', data);
+  
+      // Optionally trigger re-render or modal close
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev); // Toggle the modal visibility
+  };
+  
+
   // Many useState codes that also remain null or empty until another code triggers its activation and fill itself with something.
   const [newProfileImage, setNewProfileImage] = useState(null); //State that controls the profile picture
   const [previewImage, setPreviewImage] = useState(''); // State that controls what you see before uploading the profile picture
   const [successMessage, setSuccessMessage] = useState(''); //State that controls a message that appears when a certain code is successful
   const [activeTab, setActiveTab] = useState('posts'); // State that controls the tabs on the profile page that change based on what is written
   const [modalVisible, setModalVisible] = useState(false); //State that controls a pop up for editing your profile
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
   // After that if the data is available, it activates setProfile's effect and fills the empty data with the data fetched from fetchProfileData
   const router = useRouter();
@@ -292,7 +337,19 @@ function Profile() {
             <div className="tabContent">
               {activeTab === 'posts' && <div>Showing Posts...</div>}
               {activeTab === 'favorites' && <div>Showing Favorites...</div>}
-              {activeTab === 'bubbles' && <div>Showing Bubbles...</div>}
+              {activeTab === 'bubbles' && <div>
+                <div className='bubbleGrid'>
+                <div className='createBubbleCard' onClick={() => setIsModalOpen(true)}>
+                <FaPlus className='addBubble'/> 
+                </div>    
+                {isModalOpen && (
+        <BubbleModal
+          onClose={toggleModal} // Pass the close function to BubbleModal
+          onCreate={handleCreateBubble} // Pass the create function to BubbleModal
+        />
+      )}                
+</div>
+                </div>}
             </div>
           </div>
         </Col>
