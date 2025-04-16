@@ -15,7 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPlus } from "react-icons/fa";
 import BubbleModal from '../components/BubbleModal';
 import { CiLock } from "react-icons/ci";
-
+import Link from 'next/link';
 
 
 function Profile() {
@@ -387,10 +387,15 @@ function Profile() {
     <p>Loading bubbles...</p>
   ) : (
     bubbles.map((bubble) => (
-      <div className="bubble-item" key={bubble.bubble_id}>
+      <Link to={`/bubbles/${bubble.bubble_id}`}>
+        <div className="bubble-item" key={bubble.bubble_id} > 
       <CiLock className={bubble.is_public ? 'privateLock' : 'privateLockInvisible'} />
       <div className="bubble-title">{bubble.title}</div>
-      </div>
+       </div>
+</Link>
+
+      
+     
     ))
   )}     
 
