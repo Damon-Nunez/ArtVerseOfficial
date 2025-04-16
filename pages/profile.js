@@ -14,6 +14,8 @@ import EditProfileModal from '../utils/editProfileModule';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPlus } from "react-icons/fa";
 import BubbleModal from '../components/BubbleModal';
+import { CiLock } from "react-icons/ci";
+
 
 
 function Profile() {
@@ -40,8 +42,6 @@ function Profile() {
         console.error("Token is missing!");
         return;
       }
-      console.log("Submitting:", { title, description, isPublic });
-
       const res = await fetch('/api/bubbles/createBubble', {
         method: 'POST', // For creating new data
         headers: {
@@ -81,10 +81,45 @@ function Profile() {
   const [activeTab, setActiveTab] = useState('posts'); // State that controls the tabs on the profile page that change based on what is written
   const [modalVisible, setModalVisible] = useState(false); //State that controls a pop up for editing your profile
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bubbles,setBubbles] = useState([]);
+    const [loading, setLoading] = useState(true);
+  
   //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
   // After that if the data is available, it activates setProfile's effect and fills the empty data with the data fetched from fetchProfileData
   const router = useRouter();
   const { id } = router.query;  // Get the id from the URL
+
+  useEffect(() => {
+    const fetchUserBubbles = async () => {
+      try {
+
+        const token = localStorage.getItem('authToken');
+
+        if (!token) {
+          console.error("Token is missing!");
+          return;
+        }
+
+          const response = await fetch("/api/bubbles/getUserBubbles", {
+            method: 'GET', // For creating new data
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }})
+          if(!response.ok) throw new Error("Failed to fetch User Bubbles");
+          const data = await response.json();
+          console.log(data)
+          setBubbles(data.bubbles)
+      } catch(error) {
+        console.error("Error fetching bubbles:", error);
+      }finally {
+        setLoading(false)
+      }
+    };
+
+    fetchUserBubbles();
+  },
+  [])
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -223,7 +258,6 @@ function Profile() {
          </Col>
         <Col sm={10} md={10} lg={10}>
           <div className="profileBlock">
-            {generateWhiteStars(230, 'profilePageSeed')}
 
             <div className="profileImageWrapper">
               <div className="profileImageContainer">
@@ -347,7 +381,21 @@ function Profile() {
           onClose={toggleModal} // Pass the close function to BubbleModal
           onCreate={handleCreateBubble} // Pass the create function to BubbleModal
         />
-      )}                
+      )}
+
+        {loading ? (
+    <p>Loading bubbles...</p>
+  ) : (
+    bubbles.map((bubble) => (
+      <div className="bubble-item" key={bubble.bubble_id}>
+      <CiLock className={bubble.is_public ? 'privateLock' : 'privateLockInvisible'} />
+      <div className="bubble-title">{bubble.title}</div>
+      </div>
+    ))
+  )}     
+
+
+                         
 </div>
                 </div>}
             </div>
