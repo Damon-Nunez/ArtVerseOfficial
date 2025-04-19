@@ -387,7 +387,7 @@ function Profile() {
     <p>Loading bubbles...</p>
   ) : (
     bubbles.map((bubble) => (
-      <Link to={`/bubbles/${bubble.bubble_id}`}>
+      <Link href={`/bubbles/${bubble.bubble_id}`}>
         <div className="bubble-item" key={bubble.bubble_id} > 
       <CiLock className={bubble.is_public ? 'privateLock' : 'privateLockInvisible'} />
       <div className="bubble-title">{bubble.title}</div>
