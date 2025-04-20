@@ -146,7 +146,7 @@ const PostModal = ({ postId, onClose }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(`api/artists/getArtistProfile?id=${userId}`, {
+        const response = await fetch(`/api/artists/getArtistProfile?id=${userId}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem("authToken")}` // Add the token here
           }

@@ -1,0 +1,7 @@
+.removePostButton{
+    cursor: pointer;
+    transition: 0.2s;
+}
+.removePostButton:hover{
+    color: red;
+}
