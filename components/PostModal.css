@@ -136,3 +136,14 @@
   max-height: 450px; 
   overflow-y: auto;
 }
+.saveButton {
+  font-size:15px;
+  cursor: pointer;
+}
+.bubbleSaveList {
+  cursor: pointer;
+  transition: 0.2s;
+}
+.bubbleSaveList:hover {
+  color:lightgreen;
+}

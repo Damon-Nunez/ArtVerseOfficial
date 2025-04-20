@@ -15,7 +15,76 @@ const PostModal = ({ postId, onClose }) => {
   const [userProfile,setUserProfile] = useState(null)
   const [userId, setUserId] = useState(null)
   const [newComment,setNewComment] = useState(null)
+  const [showDropdown,setShowDropdown] = useState(false)
+  const [userBubbles,setUserBubbles] = useState([])
 
+
+  const fetchUserBubbles = async () => {
+    const token = localStorage.getItem('authToken');
+    
+    if (!token) {
+      alert("You must be logged in to save posts to bubbles!");
+      return;
+    }
+  
+    try {
+      const response = await fetch('/api/bubbles/getUserBubbles', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setUserBubbles(data.bubbles); // assuming you use setUserBubbles to store the fetched bubbles
+      } else {
+        console.error('Failed to fetch bubbles.');
+      }
+    } catch (error) {
+      console.error('Error fetching bubbles:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (showDropdown) {
+      fetchUserBubbles();
+    }
+  }, [showDropdown]);  // Run this whenever the dropdown is toggled
+  
+  
+  const saveToBubble = async (bubble_id) => {
+    const token = localStorage.getItem("authToken");
+  
+    if (!token) {
+      alert("You must be logged in to save posts!");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`/api/bubbles/addPostToBubble?id=${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ bubble_id }),
+      });
+
+      if (response.status === 409) {
+        alert("This post is already in that bubble.");
+        return;
+      }
+  
+      if (!response.ok) throw new Error("Failed to save post to bubble");
+      alert("Post has been saved to your bubble!");
+    } catch (error) {
+      console.error("Error saving post:", error);
+    }
+  };
+  
+  
 
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) {
@@ -221,13 +290,22 @@ const handleLike = async (postId) => {
                   fontSize: '1.5rem' 
                 }} 
               />
-            
+            </div>
 
               <span>
                 {loadingLikes ? "Loading..." : likes} 
               </span>
-              <CiSaveDown2 />
-              </div>
+              <CiSaveDown2 className="saveButton" onClick={() => { setShowDropdown(true);}} />
+              {userBubbles && userBubbles.length > 0 ? (
+  userBubbles.map(bubble => (
+    <p className="bubbleSaveList" key={bubble.bubble_id} onClick={() => saveToBubble(bubble.bubble_id)}>
+      {bubble.title} {/* Or whatever the bubble property is */}
+    </p>
+  ))
+) : (
+  <p>No bubbles found</p>
+)}
+              
             </div>
              </div>
          
