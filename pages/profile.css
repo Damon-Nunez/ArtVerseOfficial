@@ -363,13 +363,15 @@
   border-radius: 25px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
+  /* cursor: pointer; */
   height: 100%;
   min-height: 120px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: visible; /* Allow dropdown to be visible */
+
   
 }
 
@@ -400,6 +402,7 @@
   min-height: 140px;
   box-shadow: 0 0 15px #ff00c866;
   transition: all 0.3s ease;
+  overflow: visible; /* Allow dropdown to be visible */
 }
 
 .bubble-item.alt:hover {
@@ -417,4 +420,35 @@
 .privateLockInvisible {
   visibility: hidden;
 }
+.threeDots {
+  position: relative;
+  top: 10px; /* Adjust for better placement */
+  right: 10px;
+  font-size: 2rem;
+  z-index: 9999; /* Give it a really high z-index to ensure it's clickable */
+}
+.dropdown-menu {
+  position: absolute;
+  top: 35px; /* Adjusted */
+  right: 10px; /* Slight margin */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  z-index: 9999; /* High enough to be clickable */
+  display: none;
+}
+
+.bubble-item.show-dropdown .dropdown-menu {
+  display: block;
+}
+.deleteBubbleDropDown{
+  cursor: pointer;
+  transition: 0.2s;
+}
+.deleteBubbleDropDown:hover{
+  color:red;
+}
+
+
 

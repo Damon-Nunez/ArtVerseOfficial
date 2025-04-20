@@ -9,7 +9,6 @@ import { useState, useEffect } from 'react';
 export default function BubbleView() {
     const router = useRouter();
     const { id: bubble_id } = router.query;
-
     const [fetchedPosts,setFetchedPosts] = useState([])
     const [loading, setLoading] = useState(true);
       const [selectedPost, setSelectedPost] = useState(null); // Store the selected post ID

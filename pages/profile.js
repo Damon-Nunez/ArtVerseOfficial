@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPlus } from "react-icons/fa";
 import BubbleModal from '../components/BubbleModal';
 import { CiLock } from "react-icons/ci";
+import { BsThreeDots } from "react-icons/bs";
 import Link from 'next/link';
 
 
@@ -33,6 +34,43 @@ function Profile() {
     youtube: ''
   });
 
+  const handleDelete = async (bubble_id) => {
+    try {
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        console.error("Token is missing!");
+        return;
+      }
+      console.log("Attempting to delete bubble with ID:", bubble_id);
+      const response = await fetch(`/api/bubbles/deleteBubble?id=${bubble_id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ bubble_id }),
+      });
+  
+      if (response.ok) {
+        alert('Bubble deleted successfully!');
+        window.location.reload();
+      } else {
+        console.error('Failed to delete bubble.');
+      }
+    } catch (error) {
+      console.error('Error deleting bubble:', error);
+    }
+  };
+  
+
+  const handleDropdownClick = () => {
+    setShowDropdown(prev => {
+      console.log("Dropdown state changed: ", !prev);  // Check if state is toggling
+      return !prev;
+    });
+  };
+
   const handleCreateBubble = async ({ title, description, isPublic }) => {
     try {
 
@@ -42,6 +80,7 @@ function Profile() {
         console.error("Token is missing!");
         return;
       }
+      
       const res = await fetch('/api/bubbles/createBubble', {
         method: 'POST', // For creating new data
         headers: {
@@ -82,7 +121,8 @@ function Profile() {
   const [modalVisible, setModalVisible] = useState(false); //State that controls a pop up for editing your profile
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bubbles,setBubbles] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [selectedBubbleId, setSelectedBubbleId] = useState(null);
+  const [loading, setLoading] = useState(true);
   
   //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
   // After that if the data is available, it activates setProfile's effect and fills the empty data with the data fetched from fetchProfileData
@@ -369,41 +409,67 @@ function Profile() {
             </div>
 
             <div className="tabContent">
-              {activeTab === 'posts' && <div>Showing Posts...</div>}
-              {activeTab === 'favorites' && <div>Showing Favorites...</div>}
-              {activeTab === 'bubbles' && <div>
-                <div className='bubbleGrid'>
-                <div className='createBubbleCard' onClick={() => setIsModalOpen(true)}>
-                <FaPlus className='addBubble'/> 
-                </div>    
-                {isModalOpen && (
-        <BubbleModal
-          onClose={toggleModal} // Pass the close function to BubbleModal
-          onCreate={handleCreateBubble} // Pass the create function to BubbleModal
-        />
-      )}
+  {activeTab === 'posts' && <div>Showing Posts...</div>}
+  {activeTab === 'favorites' && <div>Showing Favorites...</div>}
+  {activeTab === 'bubbles' && (
+    <div>
+      <div className='bubbleGrid'>
+        <div className='createBubbleCard' onClick={() => setIsModalOpen(true)}>
+          <FaPlus className='addBubble' />
+        </div>
+
+        {isModalOpen && (
+          <BubbleModal
+            onClose={toggleModal} // Pass the close function to BubbleModal
+            onCreate={handleCreateBubble} // Pass the create function to BubbleModal
+          />
+        )}
 
         {loading ? (
-    <p>Loading bubbles...</p>
-  ) : (
-    bubbles.map((bubble) => (
-      <Link href={`/bubbles/${bubble.bubble_id}`}>
-        <div className="bubble-item" key={bubble.bubble_id} > 
-      <CiLock className={bubble.is_public ? 'privateLock' : 'privateLockInvisible'} />
-      <div className="bubble-title">{bubble.title}</div>
-       </div>
-</Link>
-
-      
-     
-    ))
-  )}     
-
-
-                         
+          <p>Loading bubbles...</p>
+        ) : (
+          bubbles.map((bubble) => (
+            <div className="bubble-item" key={bubble.bubble_id} 
+            onMouseLeave={() => {
+              console.log("Leaving bubble:", bubble.bubble_id);
+              if (selectedBubbleId === bubble.bubble_id) {
+                setSelectedBubbleId(null); // Close dropdown on hover out
+              }
+            }}
+          >
+            <CiLock className={bubble.is_public ? 'privateLockInvisible' : 'privateLock'} />
+          
+            <BsThreeDots
+              className="threeDots"
+              onClick={() => {
+                console.log("3 dots clicked on bubble:", bubble.bubble_id);
+                setSelectedBubbleId(prev =>
+                  prev === bubble.bubble_id ? null : bubble.bubble_id
+                );
+              }}
+            />
+          
+            {selectedBubbleId === bubble.bubble_id && (
+              <div className="dropdown-menu" style={{ display: 'block' }}>
+                <p onClick={() => console.log("Share clicked")}>Share</p>
+                <p className='deleteBubbleDropDown' onClick={() => handleDelete(bubble.bubble_id)}>Delete Bubble?</p>
+                </div>
+            )}
+          
+            <Link href={`/bubbles/${bubble.bubble_id}`}>
+              <div className="bubble-title">{bubble.title}</div>
+            </Link>
+          </div>
+          
+          
+          
+          ))
+        )}
+      </div>
+    </div>
+  )}
 </div>
-                </div>}
-            </div>
+
           </div>
         </Col>
       </Row>
