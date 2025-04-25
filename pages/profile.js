@@ -16,6 +16,7 @@ import { FaPlus } from "react-icons/fa";
 import BubbleModal from '../components/BubbleModal';
 import { CiLock } from "react-icons/ci";
 import { BsThreeDots } from "react-icons/bs";
+import CommunitySelect from '../components/communitySelect';
 import Link from 'next/link';
 
 
@@ -293,7 +294,7 @@ function Profile() {
     <div>
       
       <Row className="gx-0">
-        <Col sm={2} md={2} lg={2}>
+        <Col sm={1} md={1} lg={1}>
          <Navbar />
          </Col>
         <Col sm={10} md={10} lg={10}>
@@ -471,6 +472,9 @@ function Profile() {
 </div>
 
           </div>
+        </Col>
+        <Col sm={1} md={1} lg={1}>
+        <CommunitySelect/>
         </Col>
       </Row>
     </div>

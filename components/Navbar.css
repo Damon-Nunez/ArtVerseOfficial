@@ -98,7 +98,7 @@
     flex-direction: column;
     justify-content: space-between;
     width: 90%;
-    height: 96vh;
+    height: 100vh;
     border-right: 1px solid rgb(223, 222, 222);
   }
   
@@ -146,6 +146,8 @@
     border-radius: 50%;
     cursor:pointer;
     transition:0.2s;
+    border: 1px solid black; /* 👈 adds a thin black border */
+
   }
   .profile-picture:hover {
     transform: scale(1.2);

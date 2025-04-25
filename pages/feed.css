@@ -20,6 +20,13 @@
     height: auto;
     border-radius: 8px; /* Optional: Rounded corners */
     object-fit: cover; /* Ensure images fill the container */
+    cursor: pointer;
+  }
+  .feed-item {
+    transition: 0.4s;
+  }
+  .feed-item:hover{
+    transform: scale(1.1);
   }
   .colfix {
     padding:0px!important;
