@@ -5,7 +5,6 @@
   }
   /* Feed styles */
   .feed {
-    padding: 20px;
     background-color: #ffffff; /* Optional: background for the feed */
   }
   
@@ -21,6 +20,9 @@
     height: auto;
     border-radius: 8px; /* Optional: Rounded corners */
     object-fit: cover; /* Ensure images fill the container */
+  }
+  .colfix {
+    padding:0px!important;
   }
 
   

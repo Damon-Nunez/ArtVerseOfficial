@@ -1,0 +1,10 @@
+ 
+  .community-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 90%;
+    height: 96vh;
+    border-left: 1px solid rgb(223, 222, 222);
+  }
+  

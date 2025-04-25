@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import { Row, Col } from "react-bootstrap";
 import SearchBar from "../components/searchBar";
 import PostModal from "../components/PostModal"; // Import the modal
-
+import CommunitySelect from "../components/communitySelect";
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,10 +31,10 @@ const Feed = () => {
   return (
     <div>
       <Row>
-        <Col sm={2} md={2} lg={2}>
+        <Col sm={1} md={1} lg={1} className="colfix">
           <Navbar />
         </Col>
-        <Col sm={10} md={10} lg={10}>
+        <Col sm={10} md={10} lg={10} className="colfix" >
           <SearchBar />
           <div className="feed-container">
             {loading ? (
@@ -51,6 +51,9 @@ const Feed = () => {
               ))
             )}
           </div>
+        </Col>
+        <Col sm={1} md={1} lg={1} className="colfix">
+        <CommunitySelect/>
         </Col>
       </Row>
 

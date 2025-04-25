@@ -1,5 +1,6 @@
 import React from "react";
 import "./searchBar.css";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const SearchBar = () => {
   return (
@@ -7,9 +8,10 @@ const SearchBar = () => {
       <div className="search-bar-wrapper">
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search"
           className="search-input"
         />
+
           
       </div>
     </div>

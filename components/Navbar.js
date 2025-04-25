@@ -7,8 +7,16 @@ import { FaPeopleGroup } from 'react-icons/fa6';
 import { GrStatusPlaceholder } from 'react-icons/gr';
 import { useRouter } from 'next/router';
 import { fetchProfileData } from '../utils/api';
+import { IoHome } from "react-icons/io5";
+import { MdExplore } from "react-icons/md";
+import { FaRegPlusSquare } from "react-icons/fa";
+import { AiFillMessage } from "react-icons/ai";
+import { IoIosNotifications } from "react-icons/io";
+
+
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './navbar.css'; // Update this file to style your sidebar
+import './Navbar.css'; // Update this file to style your sidebar
 
 const Navbar = () => {
   const router = useRouter();
@@ -111,48 +119,37 @@ const Navbar = () => {
   return (
     <div className="sidebar">
       {/* Sidebar items */}
+
       <div className="sidebar-items">
-        <div className="sidebar-item" onClick={navigateToFeed}>
-          <GrStatusPlaceholder />
-          <span>Home</span>
-        </div>
-        <div className="sidebar-item">
-          <MdOutlineExplore />
-          <span>Explore</span>
-        </div>
-        <div
-          className="sidebar-item"
-          onClick={() => setShowModal(true)}
-        >
-          <FaPlusCircle />
-          <span>Post</span>
-        </div>
-        <div className="sidebar-item">
-          <FiMessageCircle />
-          <span>Messages</span>
-        </div>
-        <div className="sidebar-item">
-          <FaBell />
-          <span>Notifications</span>
-        </div>
-        <div className="sidebar-item">
-          <FaPeopleGroup />
-          <span>Groups</span>
-        </div>
-      </div>
-
-
-      {/* Make a fetch to the back end to get the profile picture and then to fetch the username as well so we can plug in the  */}
-      <div className="sidebar-profile">
+        <div className='sidebar-item'>
         <img
           onClick={navigateToProfile}
           src={profile.profileImage} // Placeholder image
           alt="Profile"
           className="profile-picture"
         />
-        <span onClick={navigateToProfile}
-        className='profileName'
-        >{profile.name}</span>
+        </div>
+        <div className="sidebar-item" onClick={navigateToFeed}>
+          <IoHome/>
+        </div>
+        <div className="sidebar-item">
+          <MdExplore />
+        </div>
+        <div
+          className="sidebar-item"
+          onClick={() => setShowModal(true)}
+        >
+          <FaRegPlusSquare />
+        </div>
+        <div className="sidebar-item">
+          <AiFillMessage />
+        </div>
+        <div className="sidebar-item">
+          <IoIosNotifications />
+        </div>
+        <div className="sidebar-item">
+          <FaPeopleGroup />
+        </div>
       </div>
 
       {/* Modal for creating a post */}
@@ -207,6 +204,7 @@ const Navbar = () => {
         </Modal.Footer>
       </Modal>
     </div>
+    
   );
 };
 
