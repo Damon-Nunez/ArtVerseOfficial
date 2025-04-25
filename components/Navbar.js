@@ -153,6 +153,7 @@ const Navbar = () => {
       </div>
 
       {/* Modal for creating a post */}
+      
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Create a Post</Modal.Title>
