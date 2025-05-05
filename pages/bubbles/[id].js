@@ -5,6 +5,10 @@ import { Row, Col } from "react-bootstrap";
 import PostModal from "../../components/PostModal"; // Import the modal
 import { useRouter } from 'next/router';
 import { BsThreeDots } from "react-icons/bs";
+import Navbar from '../../components/Navbar';
+import { CiLock } from "react-icons/ci";
+import SearchBar from '../../components/searchBar';
+
 
 export default function BubbleView() {
   const router = useRouter();
@@ -14,6 +18,7 @@ export default function BubbleView() {
   const [selectedPost, setSelectedPost] = useState(null); // Store the selected post ID
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null); // Track which post's dropdown is open
+  const [bubbleInfo, setBubbleInfo] = useState([])
 
   // Remove post from bubble function
   const removePostFromBubble = async (bubble_id, post_id) => {
@@ -78,20 +83,56 @@ useEffect(() => {
   fetchBubblePosts();
 }, [bubble_id]);
 
+useEffect(() => {
+  const fetchBubbleInfo = async () => {
+  try {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      console.error("Token is missing!");
+      return;
+    }
+
+    const response = await fetch(`/api/bubbles/getBubbleInfo?id=${bubble_id}`)
+    const data = await response.json();
+    if(data) {
+      console.log('setting BubbleInfo state with data:', data);
+      setBubbleInfo(data.bubbles[0]); // just the bubble itself
+    }
+    console.log(data)
+  }catch(error) {
+    console.error("Error fetching bubble information", error);
+  }
+}
+fetchBubbleInfo();
+},
+[])
+
 
   // Handle dropdown toggle
   const handleDropdownToggle = (post_id) => {
     setShowDropdown(prevState => prevState === post_id ? null : post_id); // Toggle dropdown for the specific post
   };
+// or setBubbleInfo(bubbleInfo) if using useState
+
 
   return (
     <div>
       <Row>
-        <Col sm={2} md={2} lg={2}>
-          <h1>Welcome to the bubble view page</h1>
-          <h2>This bubble is called...</h2>
+        <Col sm={1} md={1} lg={1} className='colFix'>
+          <Navbar/>
         </Col>
-        <Col sm={10} md={10} lg={10}>
+        <Col sm={11} md={11} lg={11} className='colFix'>
+        <SearchBar/>
+        <div className='topBubbleView'>
+          <div className='groupMove'>
+          <h2 className='bubbleTitle'> {bubbleInfo.title} </h2>
+          <div className="privacyInfo">
+          {bubbleInfo && bubbleInfo.is_public === false && <h2>Private</h2>}
+          <CiLock className='lockResize' />
+  </div>
+  </div>
+          </div>
           <div className="feed-container">
             {loading ? (
               <p>Loading posts...</p>
@@ -136,6 +177,7 @@ useEffect(() => {
               ))
             )}
           </div>
+
         </Col>
       </Row>
 
