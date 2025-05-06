@@ -17,7 +17,7 @@
   }
 
   h2 {
-    font-size:1.3rem;
+    font-size:1.7rem;
     font-family: sans-serif;
     font-weight:700;
   }
@@ -33,5 +33,45 @@
   }
 
   .groupMove {
-    margin-top: 25px;
+    margin-top: 2rem;
+    margin-left: 2rem;
   }
+
+  .feed-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 16px; /* Space between grid items */
+    padding: 16px;
+    position: relative;
+
+  }
+  
+  .feed-item img {
+    width: 100%; /* Make images responsive */
+    height: auto;
+    border-radius: 8px; /* Optional: Rounded corners */
+    object-fit: cover; /* Ensure images fill the container */
+    cursor: pointer;
+  }
+  .feed-item {
+    position: relative; /* Required for absolute children like the icon */
+    transition: 0.4s;
+  }
+  .feed-item:hover{
+    transform: scale(1.1);
+  }
+  .three-dots-icon {
+    position: absolute;
+    height:25px;
+    width: 25px;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+
+  }
+  .three-dots-icon:hover{
+    color:red;
+    transform: scale(1.3);
+  }
+  
+  

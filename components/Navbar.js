@@ -25,6 +25,7 @@ const Navbar = () => {
   const [preview, setPreview] = useState(null);
   const [tags, setTags] = useState('');
   const [description, setDescription] = useState('');
+  const [title,setTitle] = useState('')
   const [visibility, setVisibility] = useState('public');
   const [base64Image, setBase64Image] = useState(null);
 
@@ -84,6 +85,7 @@ const Navbar = () => {
     const token = localStorage.getItem('authToken');
     const postData = {
       user_id: 'YOUR_USER_ID', // Replace with actual user ID
+      title,
       image: `data:image/jpeg;base64,${base64Image}`,
       description,
       tags: tags.split(','),
@@ -154,8 +156,8 @@ const Navbar = () => {
 
       {/* Modal for creating a post */}
       
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
+      <Modal show={showModal} onHide={() => setShowModal(false)} dialogClassName="create-post-modal">
+      <Modal.Header closeButton>
           <Modal.Title>Create a Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -164,6 +166,16 @@ const Navbar = () => {
             <Form.Control type="file" onChange={handleImageUpload} />
           </Form.Group>
           {preview && <img src={preview} alt="Preview" style={{ width: '10rem', height: '10rem' }} />}
+          <Form.Group controlId="titleInput" className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Title your post"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            </Form.Group>
           <Form.Group controlId="tagsInput" className="mb-3">
             <Form.Label>Tags</Form.Label>
             <Form.Control

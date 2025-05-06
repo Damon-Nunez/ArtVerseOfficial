@@ -18,6 +18,7 @@ import { CiLock } from "react-icons/ci";
 import { BsThreeDots } from "react-icons/bs";
 import CommunitySelect from '../components/communitySelect';
 import Link from 'next/link';
+import SearchBar from '../components/searchBar';
 
 
 function Profile() {
@@ -298,6 +299,7 @@ function Profile() {
          <Navbar />
          </Col>
         <Col sm={10} md={10} lg={10}>
+        <SearchBar/>
           <div className="profileBlock">
 
             <div className="profileImageWrapper">
@@ -430,25 +432,29 @@ function Profile() {
           <p>Loading bubbles...</p>
         ) : (
           bubbles.map((bubble) => (
-            <div className="bubble-item" key={bubble.bubble_id} 
+            <div
+            className="bubble-item"
+            key={bubble.bubble_id}
+            onClick={() => router.push(`/bubbles/${bubble.bubble_id}`)}
             onMouseLeave={() => {
-              console.log("Leaving bubble:", bubble.bubble_id);
               if (selectedBubbleId === bubble.bubble_id) {
-                setSelectedBubbleId(null); // Close dropdown on hover out
+                setSelectedBubbleId(null);
               }
             }}
           >
             <CiLock className={bubble.is_public ? 'privateLockInvisible' : 'privateLock'} />
           
             <BsThreeDots
-              className="threeDots"
-              onClick={() => {
-                console.log("3 dots clicked on bubble:", bubble.bubble_id);
-                setSelectedBubbleId(prev =>
-                  prev === bubble.bubble_id ? null : bubble.bubble_id
-                );
-              }}
-            />
+  className="threeDots"
+  onClick={(e) => {
+    e.stopPropagation();  // 🛑 Prevents the bubble-item redirect
+    console.log("3 dots clicked on bubble:", bubble.bubble_id);
+    setSelectedBubbleId(prev =>
+      prev === bubble.bubble_id ? null : bubble.bubble_id
+    );
+  }}
+/>
+
           
             {selectedBubbleId === bubble.bubble_id && (
               <div className="dropdown-menu" style={{ display: 'block' }}>
@@ -457,13 +463,11 @@ function Profile() {
                 </div>
             )}
           
-            <Link href={`/bubbles/${bubble.bubble_id}`}>
-              <div className="bubble-title">{bubble.title}</div>
-            </Link>
-          </div>
-          
-          
-          
+          <Link href={`/bubbles/${bubble.bubble_id}`} legacyBehavior>
+  <a className="bubble-title">{bubble.title}</a>
+</Link>
+
+          </div>   
           ))
         )}
       </div>

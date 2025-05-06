@@ -52,7 +52,7 @@
     );
     background-size: 300% 300%;
     animation: galaxyFlow 10s ease infinite;
-    height:100%;
+    height:90%;
     z-index: 10; /* Ensure profile content stays above stars */
 }
 /* Keyframes for animation */
@@ -97,6 +97,7 @@
     gap:0.6rem;
     background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
     border-radius:12px;
+    transition: 0.2s;
     
 }
 .profileSocialMedia2 {
@@ -108,6 +109,8 @@
   gap:0.6rem;
   color:lightblue;
   border-radius: 12px;
+  transition: 0.2s;
+
 }
 .profileSocialMedia3 {
   height: 3rem;
@@ -117,8 +120,20 @@
   vertical-align: middle; /* Ensures proper alignment */
   gap:0.6rem;
   color:red;
+  transition: 0.2s;
 }
 
+.profileSocialMedia1:hover  {
+  transform: scale(1.2);
+}
+
+.profileSocialMedia2:hover {
+  transform: scale(1.2);
+}
+
+.profileSocialMedia3:hover{
+  transform: scale(1.2);
+}
 /* Followers Section */
 .profileFollowers {
     display: flex;
@@ -357,7 +372,7 @@
 
 /* Original bubble-item */
 .bubble-item {
-  background-color: #1f1f1f;
+  background-color: darkgrey;
   color: white;
   padding: 1rem;
   border-radius: 25px;
@@ -371,6 +386,7 @@
   justify-content: center;
   align-items: center;
   overflow: visible; /* Allow dropdown to be visible */
+  position: relative;
 
   
 }
@@ -378,14 +394,22 @@
 .bubble-item:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  cursor:pointer
 }
 
 .bubble-title {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-
+  text-align: center;
+  color: black; /* or whatever color fits your theme */
+  text-decoration: none;
 }
+
+.bubble-title:hover {
+  color: #ff0062; /* optional hover color */
+}
+
 
 .bubble-description {
   font-size: 0.95rem;
@@ -394,7 +418,7 @@
 
 /* ✅ New test variant for visual debugging */
 .bubble-item.alt {
-  background-color: #322c42; /* Galaxy purple */
+  background-color: white; /* Galaxy purple */
   border: 2px dashed #ff00c8;
   font-family: monospace;
   color: #ff85b3;
@@ -411,21 +435,30 @@
 }
 
 .privateLock {
-  position: relative;
-  bottom:50%;
-  left:85%;
-  font-size:25px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 30px;
   visibility: visible;
+  color:black;
+  
 }
 .privateLockInvisible {
   visibility: hidden;
 }
 .threeDots {
-  position: relative;
-  top: 10px; /* Adjust for better placement */
-  right: 10px;
-  font-size: 2rem;
-  z-index: 9999; /* Give it a really high z-index to ensure it's clickable */
+  position: absolute;
+  top: 15px;
+  right:10px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 80;
+  transition: 0.3s;
+  color:black;
+}
+.threeDots:hover {
+  transform: scale(1.2);
+  color:red;
 }
 .dropdown-menu {
   position: absolute;

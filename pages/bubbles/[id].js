@@ -8,6 +8,9 @@ import { BsThreeDots } from "react-icons/bs";
 import Navbar from '../../components/Navbar';
 import { CiLock } from "react-icons/ci";
 import SearchBar from '../../components/searchBar';
+import { PiNotePencilDuotone } from "react-icons/pi";
+import CommunitySelect from '../../components/communitySelect';
+
 
 
 export default function BubbleView() {
@@ -122,7 +125,7 @@ fetchBubbleInfo();
         <Col sm={1} md={1} lg={1} className='colFix'>
           <Navbar/>
         </Col>
-        <Col sm={11} md={11} lg={11} className='colFix'>
+        <Col sm={10} md={10} lg={10} className='colFix'>
         <SearchBar/>
         <div className='topBubbleView'>
           <div className='groupMove'>
@@ -149,7 +152,7 @@ fetchBubbleInfo();
                   <img src={post.content_url} alt={post.description || "Post"} />
 
                   {/* Three dots for dropdown */}
-                  <BsThreeDots
+                  <PiNotePencilDuotone
                     className="three-dots-icon"
                     onClick={(e) => {
                       e.stopPropagation();  // Prevent click event from propagating to parent
@@ -178,6 +181,9 @@ fetchBubbleInfo();
             )}
           </div>
 
+        </Col>
+        <Col sm={1} md={1} lg={1}>
+        <CommunitySelect/>
         </Col>
       </Row>
 
