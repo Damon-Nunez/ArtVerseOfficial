@@ -19,6 +19,8 @@ import { BsThreeDots } from "react-icons/bs";
 import CommunitySelect from '../components/communitySelect';
 import Link from 'next/link';
 import SearchBar from '../components/searchBar';
+import PostModal from "../components/PostModal"; // Import the modal
+
 
 
 function Profile() {
@@ -113,6 +115,35 @@ function Profile() {
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev); // Toggle the modal visibility
   };
+
+  useEffect(() => {
+    const getUserPosts = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+
+        if (!token) {
+          console.error("Token is missing!");
+          return;
+        }
+        const response = await fetch(`/api/posts/getUserPosts?id=${id}`, {
+          method: 'GET', // For creating new data
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }   
+        });
+        if(!response.ok) throw new Error("Failed to fetch user posts");
+        const data = await response.json();
+        console.log(data)
+        setUserPosts(data.posts)
+      }catch(error) {
+        console.error("Error fetching user posts", error);
+      }
+    }
+    getUserPosts();
+
+  },
+[])
   
 
   // Many useState codes that also remain null or empty until another code triggers its activation and fill itself with something.
@@ -125,7 +156,10 @@ function Profile() {
   const [bubbles,setBubbles] = useState([]);
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+  const [userPosts, setUserPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+    
   //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
   // After that if the data is available, it activates setProfile's effect and fills the empty data with the data fetched from fetchProfileData
   const router = useRouter();
@@ -412,7 +446,33 @@ function Profile() {
             </div>
 
             <div className="tabContent">
-  {activeTab === 'posts' && <div>Showing Posts...</div>}
+            {activeTab === 'posts' && (
+  <>
+  <div className='postsWrapper'>
+    <div className="feed-container">
+      {userPosts.map(post => (
+        <div
+          key={post.post_id}
+          className="feed-item"
+          onClick={() => {
+            setSelectedPost(post.post_id);
+            setSelectedUserId(post.user_id);
+          }}
+        >
+          <img src={post.content_url} alt={post.description || "Post"} />
+        </div>
+       
+      ))}
+    </div>
+    </div>
+
+    {selectedPost && (
+      <PostModal postId={selectedPost} onClose={() => setSelectedPost(null)} />
+    )}
+  </>
+)}
+
+
   {activeTab === 'favorites' && <div>Showing Favorites...</div>}
   {activeTab === 'bubbles' && (
     <div>
@@ -481,6 +541,8 @@ function Profile() {
         <CommunitySelect/>
         </Col>
       </Row>
+
+      {selectedPost && <PostModal postId={selectedPost} onClose={() => setSelectedPost(null)} />}
     </div>
   );
 }

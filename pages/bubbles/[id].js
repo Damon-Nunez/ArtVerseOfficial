@@ -18,8 +18,8 @@ export default function BubbleView() {
   const { id: bubble_id } = router.query;
   const [fetchedPosts, setFetchedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPost, setSelectedPost] = useState(null); // Store the selected post ID
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
+const [selectedUserId, setSelectedUserId] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null); // Track which post's dropdown is open
   const [bubbleInfo, setBubbleInfo] = useState([])
 

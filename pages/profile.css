@@ -492,4 +492,29 @@
   border-right: 1px solid rgb(223, 222, 222);
 }
 
+.feed-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+  gap: 16px; /* Space between grid items */
+  padding: 16px;
+  margin-top: 2rem;
+}
+
+.feed-item img {
+  width: 100%; /* Make images responsive */
+  height: auto;
+  border-radius: 8px; /* Optional: Rounded corners */
+  object-fit: cover; /* Ensure images fill the container */
+  cursor: pointer;
+}
+.feed-item {
+  transition: 0.4s;
+}
+.feed-item:hover{
+  transform: scale(1.1);
+}
+/* .postsWrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+} */
 
