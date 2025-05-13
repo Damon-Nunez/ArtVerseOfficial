@@ -20,6 +20,8 @@ import CommunitySelect from '../components/communitySelect';
 import Link from 'next/link';
 import SearchBar from '../components/searchBar';
 import PostModal from "../components/PostModal"; // Import the modal
+import { PiNotePencilDuotone } from "react-icons/pi";
+
 
 
 
@@ -66,8 +68,43 @@ function Profile() {
       console.error('Error deleting bubble:', error);
     }
   };
-  
 
+  const deletePost = async (post_id) => {
+    try {
+      const token = localStorage.getItem('authToken');
+  
+      if (!token) {
+        console.error("Token is missing!");
+        return;
+      }
+  
+      const response = await fetch(`/api/posts/deletePost?post_id=${post_id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+
+      if (!response.ok) {
+        throw new Error("Failed to delete post");
+      }
+  
+      const data = await response.json();
+      console.log("Post deleted:", data);
+      alert("Post deleted!");
+  
+      // Optionally refetch posts or remove from state
+      setUserPosts(prev => prev.filter(p => p.post_id !== post_id));
+  
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+  
+  
+ 
   const handleDropdownClick = () => {
     setShowDropdown(prev => {
       console.log("Dropdown state changed: ", !prev);  // Check if state is toggling
@@ -159,6 +196,8 @@ function Profile() {
   const [userPosts, setUserPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(null);
+
     
   //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
   // After that if the data is available, it activates setProfile's effect and fills the empty data with the data fetched from fetchProfileData
@@ -243,8 +282,11 @@ function Profile() {
       setNewProfileImage(file);
     }
   };
-// A long and responsible code to handle the upload of an image into a 3rd party website cloudinary
-//82-86 shows us why we needed to give balue to newProfileImage with a file because if there is no value this code can not function...
+
+  const handleDropdownToggle = (post_id) => {
+    setShowDropdown(prev => prev === post_id ? null : post_id);
+  };
+  
   const handleUpload = async () => {
     if (!newProfileImage) {
       console.error('No image selected.');
@@ -451,16 +493,37 @@ function Profile() {
   <div className='postsWrapper'>
     <div className="feed-container">
       {userPosts.map(post => (
-        <div
-          key={post.post_id}
-          className="feed-item"
-          onClick={() => {
-            setSelectedPost(post.post_id);
-            setSelectedUserId(post.user_id);
-          }}
-        >
-          <img src={post.content_url} alt={post.description || "Post"} />
-        </div>
+       <div
+       key={post.post_id}
+       className="feed-item"
+       onClick={() => {
+         setSelectedPost(post.post_id);
+         setSelectedUserId(post.user_id);
+       }}
+     >
+       <PiNotePencilDuotone
+         className="three-dots-icon"
+         onClick={(e) => {
+           e.stopPropagation();
+           handleDropdownToggle(post.post_id);
+         }}
+       />
+     
+       {showDropdown === post.post_id && (
+         <div className="dropdown-menu" style={{ display: 'block' }}>
+           <p className="removePostButton" onClick={(e) => {
+             e.stopPropagation();
+             deletePost(post.post_id)
+            
+           }}>
+             Delete Post
+           </p>
+         </div>
+       )}
+     
+       <img src={post.content_url} alt={post.description || "Post"} />
+     </div>
+     
        
       ))}
     </div>

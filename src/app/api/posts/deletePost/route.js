@@ -1,17 +1,20 @@
-import pool from '../../../../../db'; // Import the db connection (adjust path if necessary)
+import pool from '../../../../db';
 
-export async function DELETE(request, { params }) {
+export async function DELETE(req) {
   try {
-    // Destructure post_id from params
-    const { post_id } = await params;
+    const { searchParams } = new URL(req.url);
+    const post_id = searchParams.get('post_id');
 
-    // Define the query to delete the post by post_id
+    if (!post_id) {
+      return new Response(JSON.stringify({ error: "Missing post_id" }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     const query = 'DELETE FROM posts WHERE post_id = $1 RETURNING *';
-
-    // Execute the query with the post_id parameter
     const result = await pool.query(query, [post_id]);
 
-    // Check if the post was deleted
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ message: 'Post not found' }), {
         status: 404,
@@ -19,7 +22,6 @@ export async function DELETE(request, { params }) {
       });
     }
 
-    // Return a success response with the deleted post
     return new Response(JSON.stringify({ message: 'Post deleted successfully', post: result.rows[0] }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
