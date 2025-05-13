@@ -112,42 +112,63 @@ function Profile() {
     });
   };
 
-  const handleCreateBubble = async ({ title, description, isPublic }) => {
-    try {
+const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile }) => {
+  try {
+    const token = localStorage.getItem('authToken');
 
-      const token = localStorage.getItem('authToken');
-
-      if (!token) {
-        console.error("Token is missing!");
-        return;
-      }
-      
-      const res = await fetch('/api/bubbles/createBubble', {
-        method: 'POST', // For creating new data
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          is_public: isPublic,
-        }),
-        
-      });
-  
-      if (!res.ok) {
-        throw new Error('Failed to create bubble');
-      }
-  
-      const data = await res.json();
-      console.log('Bubble created:', data);
-  
-      // Optionally trigger re-render or modal close
-    } catch (err) {
-      console.error(err);
+    if (!token) {
+      console.error("Token is missing!");
+      return;
     }
-  };
+
+    let thumbnail = null;
+
+    if (thumbnailFile) {
+      const formData = new FormData();
+      formData.append('file', thumbnailFile);
+      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+
+      try {
+        const cloudinaryRes = await axios.post(
+          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          formData
+        );
+        thumbnail = cloudinaryRes.data.secure_url;
+        console.log('Uploaded thumbnail to Cloudinary:', thumbnail);
+      } catch (uploadError) {
+        console.error('Failed to upload thumbnail:', uploadError);
+      }
+    }
+
+    const res = await fetch('/api/bubbles/createBubble', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        is_public: isPublic,
+        thumbnail,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to create bubble');
+    }
+
+    const data = await res.json();
+    console.log('Bubble created:', data);
+
+    alert("Bubble created successfully!");
+    window.location.reload(); // Refresh the page
+
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev); // Toggle the modal visibility
@@ -197,6 +218,8 @@ function Profile() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null);
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+
 
     
   //A UseEffect that triggers our profile state earlier. It utilizes a UTILITY function called 'fetchProfileData' to gain all the user data from the back-end
@@ -586,9 +609,17 @@ function Profile() {
                 </div>
             )}
           
-          <Link href={`/bubbles/${bubble.bubble_id}`} legacyBehavior>
-  <a className="bubble-title">{bubble.title}</a>
+         <Link href={`/bubbles/${bubble.bubble_id}`} legacyBehavior>
+  <a className="bubble-link">
+    {bubble.thumbnail ? (
+      <img src={bubble.thumbnail} alt="Bubble Thumbnail" className="bubble-thumbnail" />
+    ) : (
+      <div className="bubble-thumbnail default-frame"></div>
+    )}
+    <div className="bubble-title">{bubble.title}</div>
+  </a>
 </Link>
+
 
           </div>   
           ))

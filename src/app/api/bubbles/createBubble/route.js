@@ -3,9 +3,10 @@ import pool from '../../../../db';
 import jwt from 'jsonwebtoken';
 
 const addBubbleQuery = `
-    INSERT INTO bubbles (artist_id, title, description, is_public)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO bubbles (artist_id, title, description, is_public, thumbnail)
+    VALUES ($1, $2, $3, $4, $5)
 `;
+
 
 export async function POST(req) {
     try {
@@ -29,7 +30,7 @@ export async function POST(req) {
         }
 
         // Extract & Validate Input
-        const { title, description, is_public } = await req.json();
+        const { title, description, is_public, thumbnail } = await req.json();
 
         if (!title || !description || is_public === undefined) {
             return NextResponse.json({ error: "Title, description, and publicity status are required" }, { status: 400 });
@@ -38,12 +39,14 @@ export async function POST(req) {
         const isPublicBool = Boolean(is_public);
 
         // Insert into Database
-        const result = await pool.query(addBubbleQuery, [
-            artist_id,
-            title,
-            description,
-            isPublicBool
-        ]);
+      const result = await pool.query(addBubbleQuery, [
+  artist_id,
+  title,
+  description,
+  isPublicBool,
+  thumbnail || null
+]);
+
 
         if (result.rowCount > 0) {
             return NextResponse.json({ message: 'Bubble created successfully' }, { status: 201 });

@@ -370,26 +370,20 @@
   /* Removed semicolon error here */
 }
 
-/* Original bubble-item */
 .bubble-item {
-  background-color: darkgrey;
-  color: white;
-  padding: 1rem;
-  border-radius: 25px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  /* cursor: pointer; */
-  height: 100%;
-  min-height: 120px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: visible; /* Allow dropdown to be visible */
   position: relative;
-
-  
+  background-color: #1f1f1f;
+  border-radius: 25px;
+  overflow: hidden;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
 }
+
 
 .bubble-item:hover {
   transform: scale(1.03);
@@ -398,12 +392,13 @@
 }
 
 .bubble-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
   text-align: center;
-  color: black; /* or whatever color fits your theme */
-  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+  text-shadow: 0 0 5px black;
 }
 
 .bubble-title:hover {
@@ -536,6 +531,31 @@
 .removePostButton:hover{
   color: red;
 }
+
+.bubble-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+
+.default-frame {
+  background-color: #6a1b9a;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+
+
 /* .postsWrapper {
   max-width: 1100px;
   margin: 0 auto;

@@ -6,12 +6,16 @@ const BubbleModal = ({ onClose, onCreate }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(false);
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState('');
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Basic structure to pass data up
-    const bubbleData = { title, description, isPublic };
+const bubbleData = { title, description, isPublic, thumbnailFile };
     onCreate(bubbleData);
     onClose(); // optional: close on create
   };
@@ -47,6 +51,35 @@ const BubbleModal = ({ onClose, onCreate }) => {
         />
         Make Public
       </label>
+
+   {thumbnailPreview && (
+  <img
+    src={thumbnailPreview}
+    alt="Thumbnail Preview"
+  style={{
+  width: '100%',
+  height: '400px',
+  objectFit: 'cover',
+  borderRadius: '10px',
+  marginBottom: '1rem',
+}}
+
+  />
+)}
+
+<input
+  type="file"
+  accept="image/*"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    setThumbnailFile(file);
+    if (file) {
+      setThumbnailPreview(URL.createObjectURL(file));
+    }
+  }}
+/>
+
+
 
       <div className="modalButtons">
         <button type="submit">Create</button>
