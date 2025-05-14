@@ -126,10 +126,10 @@
   font-size: 1.3rem;
   margin-top:1rem; /* Adjust size of the name */
 }
-.heart {
+.like {
   transition: 0.1s;
 }
-.heart:hover {
+.like:hover {
   transform: scale(1.2);
 }
 .comments-section {

@@ -3,6 +3,8 @@ import "./PostModal.css"; // Create a CSS file for styling
 import { CiHeart } from "react-icons/ci";
 import { CiSaveDown2 } from "react-icons/ci";
 import Link from "next/link";
+import { AiOutlineLike } from "react-icons/ai";
+
 
 
 const PostModal = ({ postId, onClose }) => {
@@ -283,7 +285,7 @@ const handleLike = async (postId) => {
               className="like-section flex items-center gap-10 cursor-pointer" 
               onClick={() => !loadingLikes && handleLike(postId)}
             >
-              <CiHeart className="heart"
+              <AiOutlineLike className="like"
                 style={{ 
                   color: isLiked ? 'red' : 'gray', 
                   cursor: loadingLikes ? 'not-allowed' : 'pointer', 
@@ -305,6 +307,7 @@ const handleLike = async (postId) => {
 ) : (
   <p>No bubbles found</p>
 )}
+
               
             </div>
              </div>
