@@ -219,6 +219,8 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [favoritePosts, setFavoritePosts] = useState([]);
+
 
 
     
@@ -258,6 +260,38 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
     fetchUserBubbles();
   },
   [])
+
+   useEffect(() => {
+  const fetchFavorites = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        console.error("Token is missing!");
+        return;
+      }
+
+      const response = await fetch(`/api/favorites/getUserFavorites`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch favorites");
+
+      const data = await response.json();
+      setFavoritePosts(data.favorites || []);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
+    }
+  };
+
+  if (activeTab === 'favorites') {
+    fetchFavorites();
+  }
+}, [activeTab]);
+
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -558,8 +592,23 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
   </>
 )}
 
+{activeTab === 'favorites' && (
+  <div className="feed-container">
+    {favoritePosts.map(post => (
+      <div
+        key={post.post_id}
+        className="feed-item"
+        onClick={() => {
+          setSelectedPost(post.post_id);
+          setSelectedUserId(post.user_id);
+        }}
+      >
+        <img src={post.content_url} alt={post.description || "Favorite"} />
+      </div>
+    ))}
+  </div>
+)}
 
-  {activeTab === 'favorites' && <div>Showing Favorites...</div>}
   {activeTab === 'bubbles' && (
     <div>
       <div className='bubbleGrid'>
