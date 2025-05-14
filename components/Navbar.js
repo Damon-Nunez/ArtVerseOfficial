@@ -12,8 +12,7 @@ import { MdExplore } from "react-icons/md";
 import { FaRegPlusSquare } from "react-icons/fa";
 import { AiFillMessage } from "react-icons/ai";
 import { IoIosNotifications } from "react-icons/io";
-
-
+import { IoLogOutSharp } from "react-icons/io5";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css'; // Update this file to style your sidebar
@@ -29,31 +28,27 @@ const Navbar = () => {
   const [visibility, setVisibility] = useState('public');
   const [base64Image, setBase64Image] = useState(null);
 
-     const [profile, setProfile] = useState({
-        name: '',
-        profileImage: '',
-      });
+  const [profile, setProfile] = useState({
+    name: '',
+    profileImage: '',
+  });
 
-         useEffect(() => {
-            const loadProfile = async () => {
-              try {
-                const data = await fetchProfileData();
-                console.log('Fetched profile data:', data);
-        
-                if (data) {
-                  console.log('Setting profile state with data:', data);
-                  setProfile({
-                    name: data.name || '',
-                    profileImage: data.profile_image_url || '',
-                  });
-                }
-              } catch (error) {
-                console.error('Error loading profile data:', error);
-              }
-            };
-        
-            loadProfile();
-          }, []);
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const data = await fetchProfileData();
+        if (data) {
+          setProfile({
+            name: data.name || '',
+            profileImage: data.profile_image_url || '',
+          });
+        }
+      } catch (error) {
+        console.error('Error loading profile data:', error);
+      }
+    };
+    loadProfile();
+  }, []);
 
   const navigateToFeed = () => {
     router.push('/feed');
@@ -61,6 +56,11 @@ const Navbar = () => {
 
   const navigateToProfile = () => {
     router.push('/profile');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    router.push('/');
   };
 
   const handleImageUpload = (e) => {
@@ -84,7 +84,7 @@ const Navbar = () => {
 
     const token = localStorage.getItem('authToken');
     const postData = {
-      user_id: 'YOUR_USER_ID', // Replace with actual user ID
+      user_id: 'YOUR_USER_ID',
       title,
       image: `data:image/jpeg;base64,${base64Image}`,
       description,
@@ -120,16 +120,14 @@ const Navbar = () => {
 
   return (
     <div className="sidebar">
-      {/* Sidebar items */}
-
       <div className="sidebar-items">
         <div className='sidebar-item'>
-        <img
-          onClick={navigateToProfile}
-          src={profile.profileImage} // Placeholder image
-          alt="Profile"
-          className="profile-picture"
-        />
+          <img
+            onClick={navigateToProfile}
+            src={profile.profileImage}
+            alt="Profile"
+            className="profile-picture"
+          />
         </div>
         <div className="sidebar-item" onClick={navigateToFeed}>
           <IoHome/>
@@ -137,10 +135,7 @@ const Navbar = () => {
         <div className="sidebar-item">
           <MdExplore />
         </div>
-        <div
-          className="sidebar-item"
-          onClick={() => setShowModal(true)}
-        >
+        <div className="sidebar-item" onClick={() => setShowModal(true)}>
           <FaRegPlusSquare />
         </div>
         <div className="sidebar-item">
@@ -152,12 +147,13 @@ const Navbar = () => {
         <div className="sidebar-item">
           <FaPeopleGroup />
         </div>
+        <div className="sidebar-item" onClick={handleLogout}>
+          <IoLogOutSharp />
+        </div>
       </div>
 
-      {/* Modal for creating a post */}
-      
       <Modal show={showModal} onHide={() => setShowModal(false)} dialogClassName="create-post-modal">
-      <Modal.Header closeButton>
+        <Modal.Header closeButton>
           <Modal.Title>Create a Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -175,7 +171,7 @@ const Navbar = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            </Form.Group>
+          </Form.Group>
           <Form.Group controlId="tagsInput" className="mb-3">
             <Form.Label>Tags</Form.Label>
             <Form.Control
@@ -217,7 +213,6 @@ const Navbar = () => {
         </Modal.Footer>
       </Modal>
     </div>
-    
   );
 };
 
