@@ -147,3 +147,16 @@
 .bubbleSaveList:hover {
   color:lightgreen;
 }
+
+.favorited {
+  color: red;
+  transform: scale(1.2);
+  transition: 0.2s ease;
+}
+.not-favorited {
+  color: gray;
+  transition: 0.2s ease;
+}
+.favorite-container:hover {
+  transform: scale(1.2);
+}

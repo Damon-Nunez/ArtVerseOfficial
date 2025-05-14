@@ -20,6 +20,11 @@ const PostModal = ({ postId, onClose }) => {
   const [showDropdown,setShowDropdown] = useState(false)
   const [userBubbles,setUserBubbles] = useState([])
 
+  
+  const [favorited,setFavorited] = useState(false)
+  const [isFavorited,setIsFavorited] = useState(false)
+
+
 
   const fetchUserBubbles = async () => {
     const token = localStorage.getItem('authToken');
@@ -222,6 +227,54 @@ const PostModal = ({ postId, onClose }) => {
     checkIfLiked();
   }, [postId]);
 
+  useEffect(() => {
+      const checkIfFavorited = async () => {
+        try {
+          const response = await fetch(`/api/favorites/isPostFavorited?id=${postId}`, {
+               headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Assuming you store the auth token in localStorage
+          },
+          });
+
+          if(!response.ok) throw new Error("Failed to check favorite status");
+
+          const data = await response.json();
+          setIsFavorited(data.favorited)   
+    }catch(error){
+      console.error("Error checking favorites status:", error);
+    }
+  }
+
+  checkIfFavorited();
+  }, [postId])
+
+  const handleFavorite = async (postId) => {
+    try {
+
+      const route = isFavorited ? `/api/favorites/removeFavorite?id=${postId}`: `/api/favorites/addFavorite?id=${postId}`;
+      const method = isFavorited ? 'DELETE' : "POST";
+
+      const response = await fetch(route, {
+        method:method,
+        headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Assuming the token is in localStorage
+      },
+      body: JSON.stringify({ postId }), // For DELETE, this is optional, but you might still need it
+      })
+
+      if(!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`failed to toggle favorite: ${errorMessage}`);
+      }
+setIsFavorited(!isFavorited);
+    }catch(error) {
+          console.error("Error toggling favorites:", error.message); // Log detailed error message
+
+    }
+  };
+
+
  // handleLike function for toggling like status
 const handleLike = async (postId) => {
   try {
@@ -292,6 +345,7 @@ const handleLike = async (postId) => {
                   fontSize: '1.5rem' 
                 }} 
               />
+              
             </div>
 
               <span>
@@ -307,6 +361,11 @@ const handleLike = async (postId) => {
 ) : (
   <p>No bubbles found</p>
 )}
+
+<div onClick={() => handleFavorite(postId)} className="favorite-container">
+  <CiHeart className={isFavorited ? "favorited" : "not-favorited"} />
+</div>
+
 
               
             </div>
