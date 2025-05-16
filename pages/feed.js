@@ -6,9 +6,12 @@ import SearchBar from "../components/searchBar";
 import PostModal from "../components/PostModal"; // Import the modal
 import CommunitySelect from "../components/communitySelect";
 const Feed = () => {
-  const [posts, setPosts] = useState([]);
+const [defaultPosts, setDefaultPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedPost, setSelectedPost] = useState(null); // Store the selected post ID
+  const [filteredPosts, setFilteredPosts] = useState(null);
+  const postsToRender = filteredPosts || defaultPosts;
+
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -17,7 +20,7 @@ const Feed = () => {
         if (!response.ok) throw new Error("Failed to fetch posts");
 
         const data = await response.json();
-        setPosts(data);
+        setDefaultPosts(data);
       } catch (error) {
         console.error("Error fetching posts:", error);
       } finally {
@@ -28,6 +31,30 @@ const Feed = () => {
     fetchPosts();
   }, []);
 
+  const handleSearch = async (query) => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    console.error("Missing token");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/posts/searchPost?query=${query}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error("Search failed");
+
+    const data = await response.json();
+    setFilteredPosts(data.posts); // updates what is rendered
+  } catch (err) {
+    console.error("Search error:", err);
+  }
+};
+
+
   return (
     <div>
       <Row>
@@ -35,12 +62,12 @@ const Feed = () => {
           <Navbar />
         </Col>
         <Col sm={10} md={10} lg={10} className="colfix" >
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} />
           <div className="feed-container">
             {loading ? (
               <p>Loading posts...</p>
             ) : (
-              posts.map((post) => (
+              postsToRender.map((post) => (
                 <div
                   className="feed-item"
                   key={post.post_id}
