@@ -8,23 +8,31 @@
     background-color: #ffffff; /* Optional: background for the feed */
   }
   
-  .feed-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
-    gap: 16px; /* Space between grid items */
-    padding: 16px;
-  }
-  
+.feed-container {
+  column-count: 5;
+  column-gap: 1.5rem;
+  padding: 16px;
+  margin-top: 0rem !important;
+}
+
+
   .feed-item img {
-    width: 100%; /* Make images responsive */
-    height: auto;
-    border-radius: 8px; /* Optional: Rounded corners */
-    object-fit: cover; /* Ensure images fill the container */
-    cursor: pointer;
-  }
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
   .feed-item {
-    transition: 0.4s;
-  }
+  position: relative; /* Required for absolute children like the icon */
+  transition: 0.4s;
+  z-index: 1;
+   break-inside: avoid;
+  margin-bottom: 1.5rem;
+  width: 100%;
+
+}
   .feed-item:hover{
     transform: scale(1.1);
   }
@@ -32,5 +40,22 @@
     padding:0px!important;
   }
 
+  @media (max-width: 1200px) {
+  .feed-container {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 800px) {
+  .feed-container {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 500px) {
+  .feed-container {
+    column-count: 1;
+  }
+}
   
   

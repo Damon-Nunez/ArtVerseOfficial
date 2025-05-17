@@ -11,27 +11,53 @@ const [defaultPosts, setDefaultPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null); // Store the selected post ID
   const [filteredPosts, setFilteredPosts] = useState(null);
   const postsToRender = filteredPosts || defaultPosts;
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+
+
+const fetchPosts = async (pageNum) => {
+  if (!hasMore) return;
+
+  try {
+    const response = await fetch(`/api/posts/getAllPosts?page=${pageNum}&limit=20`);
+    if (!response.ok) throw new Error("Failed to fetch posts");
+
+    const data = await response.json();
+
+    if (data.length === 0) {
+      setHasMore(false); // 🛑 No more posts to fetch
+    } else {
+      setDefaultPosts(prev => [...prev, ...data]);
+    }
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("/api/posts/getAllPosts");
-        if (!response.ok) throw new Error("Failed to fetch posts");
+  fetchPosts(page);
+}, [page]);
 
-        const data = await response.json();
-        setDefaultPosts(data);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchPosts();
-  }, []);
+useEffect(() => {
+const handleScroll = () => {
+  const bottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
+  if (bottom && hasMore) {
+    setPage(prev => prev + 1);
+  }
+};
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
 
   const handleSearch = async (query) => {
+    
   const token = localStorage.getItem("authToken");
   if (!token) {
     console.error("Missing token");

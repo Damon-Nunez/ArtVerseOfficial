@@ -93,15 +93,20 @@
   }
 
   
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 90%;
-    height: 100vh;
-    border-right: 1px solid rgb(223, 222, 222);
-  }
-  
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90%;
+  height: 100vh;
+  border-right: 1px solid rgb(223, 222, 222);
+
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+
   .sidebar-items {
     display: flex;
     flex-direction: column;

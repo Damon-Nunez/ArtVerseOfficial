@@ -21,6 +21,7 @@ import Link from 'next/link';
 import SearchBar from '../components/searchBar';
 import PostModal from "../components/PostModal"; // Import the modal
 import { PiNotePencilDuotone } from "react-icons/pi";
+import defaultImage from '../public/images/defaultpfp.webp'
 
 
 
@@ -443,9 +444,12 @@ useEffect(() => {
             <div className="profileImageWrapper">
               <div className="profileImageContainer">
                 <img
-                  src={previewImage || profile.profileImage || '/default-profile.png'}
+                  src={previewImage || profile.profileImage || defaultImage}
                   alt="Profile"
-                  className="profileImage"
+                 className={
+  profile.profileImage ? "profileImage" : "profileImage defaultProfileImage"
+}
+
                 />
                 <div
                   className="overlay"
@@ -550,69 +554,90 @@ useEffect(() => {
             </div>
 
             <div className="tabContent">
-            {activeTab === 'posts' && (
+          {activeTab === 'posts' && (
   <>
-  <div className='postsWrapper'>
-    <div className="feed-container">
-      {userPosts.map(post => (
-       <div
-       key={post.post_id}
-       className="feed-item"
-       onClick={() => {
-         setSelectedPost(post.post_id);
-         setSelectedUserId(post.user_id);
-       }}
-     >
-       <PiNotePencilDuotone
-         className="three-dots-icon"
-         onClick={(e) => {
-           e.stopPropagation();
-           handleDropdownToggle(post.post_id);
-         }}
-       />
-     
-       {showDropdown === post.post_id && (
-         <div className="dropdown-menu" style={{ display: 'block' }}>
-           <p className="removePostButton" onClick={(e) => {
-             e.stopPropagation();
-             deletePost(post.post_id)
-            
-           }}>
-             Delete Post
-           </p>
-         </div>
-       )}
-     
-       <img src={post.content_url} alt={post.description || "Post"} />
-     </div>
-     
-       
-      ))}
-    </div>
+    <div className='postsWrapper'>
+      {userPosts.length === 0 ? (
+        <div className='bubbleGrid'>
+          <div
+            className='createBubbleCard'
+            onClick={() => setSelectedPost('new')}
+          >
+            <p style={{ textAlign: 'center' }}>Create your first post!</p>
+          </div>
+        </div>
+      ) : (
+        <div className="feed-container">
+          {userPosts.map(post => (
+            <div
+              key={post.post_id}
+              className="feed-item"
+              onClick={() => {
+                setSelectedPost(post.post_id);
+                setSelectedUserId(post.user_id);
+              }}
+            >
+              <PiNotePencilDuotone
+                className="three-dots-icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDropdownToggle(post.post_id);
+                }}
+              />
+
+              {showDropdown === post.post_id && (
+                <div className="dropdown-menu" style={{ display: 'block' }}>
+                  <p
+                    className="removePostButton"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deletePost(post.post_id);
+                    }}
+                  >
+                    Delete Post
+                  </p>
+                </div>
+              )}
+
+              <img src={post.content_url} alt={post.description || "Post"} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
 
     {selectedPost && (
-      <PostModal postId={selectedPost} onClose={() => setSelectedPost(null)} />
+      <PostModal
+        postId={selectedPost !== 'new' ? selectedPost : null}
+        onClose={() => setSelectedPost(null)}
+      />
     )}
   </>
 )}
 
 {activeTab === 'favorites' && (
   <div className="feed-container">
-    {favoritePosts.map(post => (
-      <div
-        key={post.post_id}
-        className="feed-item"
-        onClick={() => {
-          setSelectedPost(post.post_id);
-          setSelectedUserId(post.user_id);
-        }}
-      >
-        <img src={post.content_url} alt={post.description || "Favorite"} />
-      </div>
-    ))}
+    {favoritePosts.length === 0 ? (
+      <p style={{ opacity: 0.6, fontSize: "30px", display:"flex", justifyContent:"center", color:"white"}}>
+        No favorites yet.
+      </p>
+    ) : (
+      favoritePosts.map(post => (
+        <div
+          key={post.post_id}
+          className="feed-item"
+          onClick={() => {
+            setSelectedPost(post.post_id);
+            setSelectedUserId(post.user_id);
+          }}
+        >
+          <img src={post.content_url} alt={post.description || "Favorite"} />
+        </div>
+      ))
+    )}
   </div>
 )}
+
 
   {activeTab === 'bubbles' && (
     <div>

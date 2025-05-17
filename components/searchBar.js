@@ -15,11 +15,12 @@ const SearchBar = ({ onSearch }) => {
   placeholder="Search posts..."
   value={input}
   onChange={(e) => setInput(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      onSearch(input);
-    }
-  }}
+onKeyDown={(e) => {
+  if (e.key === 'Enter' && input.trim() !== '') {
+    onSearch(input.trim());
+  }
+}}
+
 />
 
 

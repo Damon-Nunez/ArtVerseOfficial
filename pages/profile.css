@@ -488,30 +488,33 @@
 }
 
 .feed-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
-  gap: 16px; /* Space between grid items */
+  column-count: 6;
+  column-gap: 1.5rem;
   padding: 16px;
-  position: relative;
-
+  margin-top: 2.4rem;
 }
 
-.feed-item img {
-  width: 100%; /* Make images responsive */
+
+  .feed-item img {
+  width: 100%;
   height: auto;
-  border-radius: 8px; /* Optional: Rounded corners */
-  object-fit: cover; /* Ensure images fill the container */
+  border-radius: 8px;
+  object-fit: cover;
   cursor: pointer;
 }
-.feed-item {
+
+  .feed-item {
   position: relative; /* Required for absolute children like the icon */
   transition: 0.4s;
   z-index: 1;
+   break-inside: avoid;
+  margin-bottom: 1.5rem;
+  width: 100%;
 
 }
-.feed-item:hover{
-  transform: scale(1.1);
-}
+  .feed-item:hover{
+    transform: scale(1.1);
+  }
 .three-dots-icon {
   position: absolute;
   height:25px;
@@ -563,3 +566,7 @@
   margin: 0 auto;
 } */
 
+.defaultProfileImage {
+  filter: grayscale(40%);
+  opacity: 0.85;
+}
