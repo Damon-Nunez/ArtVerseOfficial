@@ -37,7 +37,7 @@ ORDER BY f.favorited_at DESC;
               if(result.rows.length > 0) {
                 return NextResponse.json({favorites: result.rows}, {status:200});
               }else {
-                return NextResponse.json({ message: "No favorites for this user. Go find some!"}, {status:404});
+return NextResponse.json({ favorites: [] }, { status: 200 });
               }
         
 

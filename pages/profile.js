@@ -249,7 +249,7 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
           if(!response.ok) throw new Error("Failed to fetch User Bubbles");
           const data = await response.json();
           console.log(data)
-          setBubbles(data.bubbles)
+          setBubbles(data.bubbles || []);
       } catch(error) {
         console.error("Error fetching bubbles:", error);
       }finally {
@@ -291,6 +291,12 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
     fetchFavorites();
   }
 }, [activeTab]);
+
+useEffect(() => {
+  const handleClickOutside = () => setShowDropdown(null);
+  window.addEventListener('click', handleClickOutside);
+  return () => window.removeEventListener('click', handleClickOutside);
+}, []);
 
 
   useEffect(() => {
@@ -432,7 +438,6 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
          <Navbar />
          </Col>
         <Col sm={10} md={10} lg={10}>
-        <SearchBar/>
           <div className="profileBlock">
 
             <div className="profileImageWrapper">
@@ -623,20 +628,20 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
           />
         )}
 
-        {loading ? (
-          <p>Loading bubbles...</p>
-        ) : (
-          bubbles.map((bubble) => (
-            <div
-            className="bubble-item"
-            key={bubble.bubble_id}
-            onClick={() => router.push(`/bubbles/${bubble.bubble_id}`)}
-            onMouseLeave={() => {
-              if (selectedBubbleId === bubble.bubble_id) {
-                setSelectedBubbleId(null);
-              }
-            }}
-          >
+       {loading ? (
+  <p>Loading bubbles...</p>
+) : (
+  bubbles.map((bubble) => (
+    <div
+      className="bubble-item"
+      key={bubble.bubble_id}
+      onClick={() => router.push(`/bubbles/${bubble.bubble_id}`)}
+      onMouseLeave={() => {
+        if (selectedBubbleId === bubble.bubble_id) {
+          setSelectedBubbleId(null);
+        }
+      }}
+    >
             <CiLock className={bubble.is_public ? 'privateLockInvisible' : 'privateLock'} />
           
             <BsThreeDots

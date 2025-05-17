@@ -52,7 +52,7 @@
     );
     background-size: 300% 300%;
     animation: galaxyFlow 10s ease infinite;
-    height:90%;
+    height:100%;
     z-index: 10; /* Ensure profile content stays above stars */
 }
 /* Keyframes for animation */
@@ -506,6 +506,8 @@
 .feed-item {
   position: relative; /* Required for absolute children like the icon */
   transition: 0.4s;
+  z-index: 1;
+
 }
 .feed-item:hover{
   transform: scale(1.1);

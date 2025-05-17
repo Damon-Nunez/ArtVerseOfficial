@@ -22,6 +22,21 @@ export default function BubbleView() {
 const [selectedUserId, setSelectedUserId] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null); // Track which post's dropdown is open
   const [bubbleInfo, setBubbleInfo] = useState([])
+  const [filteredPosts, setFilteredPosts] = useState(null);
+
+  const postsToRender = filteredPosts || fetchedPosts;
+
+
+
+  const handleSearch = (query) => {
+  const lowerQuery = query.toLowerCase();
+  const filtered = fetchedPosts.filter(post =>
+    post.title?.toLowerCase().includes(lowerQuery) ||
+    post.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+  );
+  setFilteredPosts(filtered);
+};
+
 
   // Remove post from bubble function
   const removePostFromBubble = async (bubble_id, post_id) => {
@@ -126,7 +141,7 @@ fetchBubbleInfo();
           <Navbar/>
         </Col>
         <Col sm={10} md={10} lg={10} className='colFix'>
-        <SearchBar/>
+<SearchBar onSearch={handleSearch} />
         <div className='topBubbleView'>
           <div className='groupMove'>
           <h2 className='bubbleTitle'> {bubbleInfo.title} </h2>
@@ -140,7 +155,7 @@ fetchBubbleInfo();
             {loading ? (
               <p>Loading posts...</p>
             ) : (
-              fetchedPosts.map((post) => (
+              postsToRender.map((post) => (
                 <div
                   className="feed-item"
                   key={post.post_id}

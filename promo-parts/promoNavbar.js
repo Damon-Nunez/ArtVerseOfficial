@@ -29,8 +29,11 @@ const PromoNavbar = () => {
       });
 
       if (response.status === 201 && response.data?.message) {
-        alert(response.data.message);
-        router.push('/profile'); 
+       setSuccessMessage('Account created! Please log in.');
+setTimeout(() => {
+  window.location.reload();
+}, 2000);
+
       } else {
         setErrorMessage('Sign-up failed. Please try again.'); // Default error message
       }

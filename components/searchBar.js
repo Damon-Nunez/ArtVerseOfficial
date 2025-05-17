@@ -11,6 +11,7 @@ const SearchBar = ({ onSearch }) => {
       <div className="search-bar-wrapper">
        <input
   type="text"
+  className="search-input"
   placeholder="Search posts..."
   value={input}
   onChange={(e) => setInput(e.target.value)}

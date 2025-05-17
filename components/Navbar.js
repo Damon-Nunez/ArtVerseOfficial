@@ -88,7 +88,7 @@ const Navbar = () => {
       title,
       image: `data:image/jpeg;base64,${base64Image}`,
       description,
-      tags: tags.split(','),
+      tags: tags.trim().split(/[\s,]+/),
       type: visibility,
     };
 
@@ -176,7 +176,7 @@ const Navbar = () => {
             <Form.Label>Tags</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter tags (comma-separated)"
+              placeholder="Enter tags (separated by spaces or commas)"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
             />

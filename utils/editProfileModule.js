@@ -54,6 +54,7 @@ const editProfileModal = ({
   };
 
   return (
+      <div className="modalOverlay">
     <div className="modalContent">
       <h2>Edit Profile</h2>
       <input
@@ -111,6 +112,7 @@ const editProfileModal = ({
       <button onClick={() => setModalVisible(false)}>Cancel</button>
       <button onClick={handleSaveChanges}>Save Changes</button>
       </div>
+    </div>
     </div>
   );
 };

@@ -36,7 +36,7 @@ export async function GET(req) {
       if (result.rows.length > 0){       
     return NextResponse.json({ bubbles: result.rows }, { status: 200 });
 } else {
-    return NextResponse.json({ message: "No bubbles for this user, Make One" }, { status: 404 });
+return NextResponse.json({ bubbles: [] }, { status: 200 });
 }
 
 
