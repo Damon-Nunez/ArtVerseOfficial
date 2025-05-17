@@ -122,34 +122,50 @@ const Navbar = () => {
     <div className="sidebar">
       <div className="sidebar-items">
         <div className='sidebar-item'>
-          <img
-            onClick={navigateToProfile}
-            src={profile.profileImage}
-            alt="Profile"
-            className="profile-picture"
-          />
+         <img
+  onClick={navigateToProfile}
+  src={profile.profileImage || "/images/defaultpfp.webp"}
+  alt="Profile"
+  className="profile-picture"
+/>
+
+          
         </div>
-        <div className="sidebar-item" onClick={navigateToFeed}>
-          <IoHome/>
-        </div>
-        <div className="sidebar-item">
-          <MdExplore />
-        </div>
-        <div className="sidebar-item" onClick={() => setShowModal(true)}>
-          <FaRegPlusSquare />
-        </div>
-        <div className="sidebar-item">
-          <AiFillMessage />
-        </div>
-        <div className="sidebar-item">
-          <IoIosNotifications />
-        </div>
-        <div className="sidebar-item">
-          <FaPeopleGroup />
-        </div>
-        <div className="sidebar-item" onClick={handleLogout}>
-          <IoLogOutSharp />
-        </div>
+      <div className="sidebar-item tooltip-wrapper">
+  <IoHome onClick={navigateToFeed}/>
+  <span className="tooltip-text">Home</span>
+</div>
+
+       <div className="sidebar-item tooltip-wrapper">
+  <MdExplore />
+  <span className="tooltip-text">Explore</span>
+</div>
+
+<div className="sidebar-item tooltip-wrapper" onClick={() => setShowModal(true)}>
+  <FaRegPlusSquare />
+  <span className="tooltip-text">Create Post</span>
+</div>
+
+<div className="sidebar-item tooltip-wrapper">
+  <AiFillMessage />
+  <span className="tooltip-text">Messages</span>
+</div>
+
+<div className="sidebar-item tooltip-wrapper">
+  <IoIosNotifications />
+  <span className="tooltip-text">Notifications</span>
+</div>
+
+<div className="sidebar-item tooltip-wrapper">
+  <FaPeopleGroup />
+  <span className="tooltip-text">Communities</span>
+</div>
+
+<div className="sidebar-item tooltip-wrapper" onClick={handleLogout}>
+  <IoLogOutSharp />
+  <span className="tooltip-text">Log Out</span>
+</div>
+
       </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)} dialogClassName="create-post-modal">

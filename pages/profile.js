@@ -21,7 +21,6 @@ import Link from 'next/link';
 import SearchBar from '../components/searchBar';
 import PostModal from "../components/PostModal"; // Import the modal
 import { PiNotePencilDuotone } from "react-icons/pi";
-import defaultImage from '../public/images/defaultpfp.webp'
 
 
 
@@ -444,13 +443,11 @@ useEffect(() => {
             <div className="profileImageWrapper">
               <div className="profileImageContainer">
                 <img
-                  src={previewImage || profile.profileImage || defaultImage}
-                  alt="Profile"
-                 className={
-  profile.profileImage ? "profileImage" : "profileImage defaultProfileImage"
-}
+  src={previewImage || profile.profileImage || "/images/defaultpfp.webp"}
+  alt="Profile"
+  className={profile.profileImage ? "profileImage" : "profileImage defaultProfileImage"}
+/>
 
-                />
                 <div
                   className="overlay"
                   onClick={() => document.querySelector('.profileImageUpload').click()}
@@ -554,21 +551,14 @@ useEffect(() => {
             </div>
 
             <div className="tabContent">
-          {activeTab === 'posts' && (
+           {activeTab === 'posts' && (
   <>
     <div className='postsWrapper'>
-      {userPosts.length === 0 ? (
-        <div className='bubbleGrid'>
-          <div
-            className='createBubbleCard'
-            onClick={() => setSelectedPost('new')}
-          >
-            <p style={{ textAlign: 'center' }}>Create your first post!</p>
-          </div>
-        </div>
-      ) : (
-        <div className="feed-container">
-          {userPosts.map(post => (
+      <div className="feed-container">
+        {userPosts.length === 0 ? (
+          <p style={{ opacity: 0.6, fontSize: "30px", display:"flex", justifyContent:"center", color:"white" }}>No posts yet...</p>
+        ) : (
+          userPosts.map(post => (
             <div
               key={post.post_id}
               className="feed-item"
@@ -584,7 +574,6 @@ useEffect(() => {
                   handleDropdownToggle(post.post_id);
                 }}
               />
-
               {showDropdown === post.post_id && (
                 <div className="dropdown-menu" style={{ display: 'block' }}>
                   <p
@@ -598,19 +587,15 @@ useEffect(() => {
                   </p>
                 </div>
               )}
-
               <img src={post.content_url} alt={post.description || "Post"} />
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
 
     {selectedPost && (
-      <PostModal
-        postId={selectedPost !== 'new' ? selectedPost : null}
-        onClose={() => setSelectedPost(null)}
-      />
+      <PostModal postId={selectedPost} onClose={() => setSelectedPost(null)} />
     )}
   </>
 )}

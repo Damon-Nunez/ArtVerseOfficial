@@ -107,13 +107,14 @@
   z-index: 100;
 }
 
-  .sidebar-items {
-    display: flex;
-    flex-direction: column;
-    align-items:center; /* push items to the left */
-    gap: 30px; 
-    margin-top: 2rem;/* spacing between icons */
-  }
+ .sidebar-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 2rem;
+}
+
   
   .sidebar-item {
     font-size: 1.8rem; /* make icons bigger */
@@ -226,4 +227,34 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.tooltip-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: max-content;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  position: absolute;
+  top: -30px;
+  z-index: 100;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
