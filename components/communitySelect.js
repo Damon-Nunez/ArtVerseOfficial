@@ -5,7 +5,7 @@ const CommunitySelect = () => {
     return (
       <div>
         <div className="community-container">
-          <p>this is a test</p>
+          <p>coming soon</p>
         </div>
       </div>
     );
