@@ -137,7 +137,7 @@
   overflow-y: auto;
 }
 .saveButton {
-  font-size:15px;
+  font-size:30px;
   cursor: pointer;
 }
 .bubbleSaveList {
@@ -159,4 +159,94 @@
 }
 .favorite-container:hover {
   transform: scale(1.2);
+}
+.interaction-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.interaction-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: transform 0.2s ease;
+}
+
+.interaction-icon:hover {
+  transform: scale(1.15);
+}
+
+.like-count {
+  font-size: 1.2rem;
+}
+
+.bubble-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bubble-modal-popup {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  min-width: 300px;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.bubble-modal-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.bubble-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bubble-modal-option {
+  padding: 10px;
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.bubble-modal-option:hover {
+  background-color: #ff00c8;
+  color: white;
+}
+
+.bubble-modal-empty {
+  color: #666;
+  font-style: italic;
+}
+
+.bubble-modal-cancel {
+  margin-top: 1rem;
+  padding: 8px 16px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.bubble-modal-cancel:hover {
+  background-color: #bbb;
 }

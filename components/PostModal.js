@@ -19,8 +19,7 @@ const PostModal = ({ postId, onClose }) => {
   const [newComment,setNewComment] = useState(null)
   const [showDropdown,setShowDropdown] = useState(false)
   const [userBubbles,setUserBubbles] = useState([])
-
-  
+  const [showBubbleModal, setShowBubbleModal] = useState(false);
   const [favorited,setFavorited] = useState(false)
   const [isFavorited,setIsFavorited] = useState(false)
 
@@ -54,11 +53,12 @@ const PostModal = ({ postId, onClose }) => {
     }
   };
 
-  useEffect(() => {
-    if (showDropdown) {
-      fetchUserBubbles();
-    }
-  }, [showDropdown]);  // Run this whenever the dropdown is toggled
+ useEffect(() => {
+  if (showBubbleModal) {
+    fetchUserBubbles();
+  }
+}, [showBubbleModal]);
+ // Run this whenever the dropdown is toggled
   
   
   const saveToBubble = async (bubble_id) => {
@@ -119,7 +119,7 @@ const PostModal = ({ postId, onClose }) => {
       if (!response.ok) throw new Error("Failed to add comment");
   
       const newCommentData = await response.json(); // Assuming the response returns the new comment data
-      setComments([newCommentData, ...comments]); // Add the new comment to the top
+ await fetchComments(); // reuse your existing fetch logic
       setNewComment(""); // Clear the input
     } catch (error) {
       console.error("Error adding comment:", error);
@@ -170,20 +170,20 @@ const PostModal = ({ postId, onClose }) => {
     }
   }, [userId]);
 
-  useEffect(() => {
     const fetchComments = async () => {
-      try {
-        const response = await fetch(`/api/comments/getCommentsFromPost?id=${postId}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem("authToken")}` // Add the token here
-          }
-        });
-        const data = await response.json();
-        setComments(data.comments || []);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
+  try {
+    const response = await fetch(`/api/comments/getCommentsFromPost?id=${postId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("authToken")}`
       }
-    };
+    });
+    const data = await response.json();
+    setComments(data.comments || []);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+  }
+};
+  useEffect(() => {
     fetchComments();
  }, [postId]);
 
@@ -338,35 +338,69 @@ const handleLike = async (postId) => {
               className="like-section flex items-center gap-10 cursor-pointer" 
               onClick={() => !loadingLikes && handleLike(postId)}
             >
-              <AiOutlineLike className="like"
-                style={{ 
-                  color: isLiked ? 'red' : 'gray', 
-                  cursor: loadingLikes ? 'not-allowed' : 'pointer', 
-                  fontSize: '1.5rem' 
-                }} 
-              />
-              
-            </div>
+             <div className="interaction-row">
+  <div className="interaction-icon" onClick={() => !loadingLikes && handleLike(postId)}>
+    <AiOutlineLike 
+      style={{ 
+        color: isLiked ? 'red' : 'gray',
+        fontSize: '2rem',
+        cursor: 'pointer'
+      }} 
+    />
+    <span className="like-count">{loadingLikes ? '...' : likes}</span>
+  </div>
 
-              <span>
-                {loadingLikes ? "Loading..." : likes} 
-              </span>
-              <CiSaveDown2 className="saveButton" onClick={() => { setShowDropdown(true);}} />
-              {userBubbles && userBubbles.length > 0 ? (
-  userBubbles.map(bubble => (
-    <p className="bubbleSaveList" key={bubble.bubble_id} onClick={() => saveToBubble(bubble.bubble_id)}>
-      {bubble.title} {/* Or whatever the bubble property is */}
-    </p>
-  ))
-) : (
-  <p>No bubbles found</p>
-)}
+  <div className="interaction-icon" onClick={() => handleFavorite(postId)}>
+    <CiHeart 
+      className={isFavorited ? "favorited" : "not-favorited"}
+      style={{ fontSize: '2rem', cursor: 'pointer' }}
+    />
+  </div>
 
-<div onClick={() => handleFavorite(postId)} className="favorite-container">
-  <CiHeart className={isFavorited ? "favorited" : "not-favorited"} />
+  <div className="interaction-icon" onClick={() => setShowDropdown(!showDropdown)}>
+<CiSaveDown2 
+  className="saveButton" 
+  onClick={(e) => {
+    e.stopPropagation();
+    setShowBubbleModal(true);
+  }} 
+/>
+
+
+
+  </div>
 </div>
 
+{showBubbleModal && (
+  <div className="bubble-modal-overlay" onClick={() => setShowBubbleModal(false)}>
+    <div className="bubble-modal-popup" onClick={(e) => e.stopPropagation()}>
+      <h3 className="bubble-modal-title">Save to Bubble</h3>
+      <div className="bubble-modal-list">
+        {userBubbles.length > 0 ? (
+          userBubbles.map(bubble => (
+            <p
+              key={bubble.bubble_id}
+              className="bubble-modal-option"
+              onClick={() => {
+                saveToBubble(bubble.bubble_id);
+                setShowBubbleModal(false);
+              }}
+            >
+              {bubble.title}
+            </p>
+          ))
+        ) : (
+          <p className="bubble-modal-empty">You don’t have any bubbles yet!</p>
+        )}
+      </div>
+      <button className="bubble-modal-cancel" onClick={() => setShowBubbleModal(false)}>Cancel</button>
+    </div>
+  </div>
+)}
 
+
+              
+            </div>
               
             </div>
              </div>

@@ -205,12 +205,6 @@
   align-items: center;
   min-height: 100vh; /* Ensure the modal is vertically centered */
 }
-
-.modal-content {
-  width: 100%;
-  max-width: 500px; /* Limit the width if necessary */
-  margin: auto;
-}
 .col-lg-2{
   padding:0px;
 }
@@ -219,8 +213,8 @@
   background: white;
   padding: 20px;
   width: 100%;
+  max-width: 1000px;
   height: auto;
-  max-width: 800px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -228,6 +222,7 @@
   flex-direction: column;
   gap: 20px;
 }
+
 
 .tooltip-wrapper {
   position: relative;
@@ -257,4 +252,33 @@
 .tooltip-wrapper:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+.create-post-grid {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.create-post-left,
+.create-post-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.post-preview-image {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+.upload-prompt {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  margin-bottom: 1rem;
 }

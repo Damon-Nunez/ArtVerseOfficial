@@ -431,8 +431,14 @@ useEffect(() => {
   };
 
   return (
+     <>
+    {loading ? (
+      <>
+        <div className="loader-overlay"></div>
+        <div className="loader"></div>
+      </>
+    ) : (
     <div>
-      
       <Row className="gx-0">
         <Col sm={1} md={1} lg={1}>
          <Navbar />
@@ -639,8 +645,11 @@ useEffect(() => {
         )}
 
        {loading ? (
-  <p>Loading bubbles...</p>
-) : (
+  <>
+    <div className="loader-overlay"></div>
+    <div className="loader"></div>
+  </>
+)  : (
   bubbles.map((bubble) => (
     <div
       className="bubble-item"
@@ -701,7 +710,10 @@ useEffect(() => {
       </Row>
 
       {selectedPost && <PostModal postId={selectedPost} onClose={() => setSelectedPost(null)} />}
+        
     </div>
+    )}
+    </>
   );
 }
 

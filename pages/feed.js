@@ -90,9 +90,12 @@ const handleScroll = () => {
         <Col sm={10} md={10} lg={10} className="colfix" >
           <SearchBar onSearch={handleSearch} />
           <div className="feed-container">
-            {loading ? (
-              <p>Loading posts...</p>
-            ) : (
+         {loading ? (
+  <>
+    <div className="loader-overlay"></div>
+    <div className="loader"></div>
+  </>
+): (
               postsToRender.map((post) => (
                 <div
                   className="feed-item"

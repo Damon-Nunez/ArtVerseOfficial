@@ -168,57 +168,72 @@ const Navbar = () => {
 
       </div>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)} dialogClassName="create-post-modal">
+<Modal show={showModal} onHide={() => setShowModal(false)} dialogClassName="create-post-modal" size="xl">
         <Modal.Header closeButton>
           <Modal.Title>Create a Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Upload Image</Form.Label>
-            <Form.Control type="file" onChange={handleImageUpload} />
-          </Form.Group>
-          {preview && <img src={preview} alt="Preview" style={{ width: '10rem', height: '10rem' }} />}
-          <Form.Group controlId="titleInput" className="mb-3">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Title your post"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="tagsInput" className="mb-3">
-            <Form.Label>Tags</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter tags (separated by spaces or commas)"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="descriptionInput" className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Write something about your post"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="visibilitySelect" className="mb-3">
-            <Form.Label>Visibility</Form.Label>
-            <Form.Control
-              as="select"
-              value={visibility}
-              onChange={(e) => setVisibility(e.target.value)}
-            >
-              <option value="public">Public</option>
-              <option value="community">Community</option>
-            </Form.Control>
-          </Form.Group>
-        </Modal.Body>
+  <div className="create-post-grid">
+    {/* LEFT SIDE - Image Upload + Preview */}
+    <div className="create-post-left">
+      {preview ? (
+        <img src={preview} alt="Preview" className="post-preview-image" />
+      ) : (
+        <p className="upload-prompt">Upload your artwork</p>
+      )}
+      <Form.Group controlId="formFile" className="mb-3">
+        <Form.Control type="file" onChange={handleImageUpload} />
+      </Form.Group>
+    </div>
+
+    {/* RIGHT SIDE - Post Details */}
+    <div className="create-post-right">
+      <Form.Group controlId="titleInput" className="mb-3">
+        <Form.Label>Title</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Give your post a title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="tagsInput" className="mb-3">
+        <Form.Label>Tags</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter tags (comma separated or space seperated)"
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="descriptionInput" className="mb-3">
+        <Form.Label>Description</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          placeholder="Write something about your post"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="visibilitySelect" className="mb-3">
+        <Form.Label>Visibility</Form.Label>
+        <Form.Control
+          as="select"
+          value={visibility}
+          onChange={(e) => setVisibility(e.target.value)}
+        >
+          <option value="public">Public</option>
+          <option value="community">Community</option>
+        </Form.Control>
+      </Form.Group>
+    </div>
+  </div>
+</Modal.Body>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Close

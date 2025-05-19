@@ -1,94 +1,82 @@
-// BubbleModal.js
 import React, { useState } from 'react';
-import './BubbleModal.css';
+import './BubbleModal.css'; // Make sure this matches the new CSS I gave you
 
 const BubbleModal = ({ onClose, onCreate }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [thumbnailFile, setThumbnailFile] = useState(null);
-  const [thumbnailPreview, setThumbnailPreview] = useState('');
+  const [preview, setPreview] = useState(null);
 
+  const handleThumbnailUpload = (e) => {
+    const file = e.target.files[0];
+    setThumbnailFile(file);
 
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleCreate = () => {
+    if (!title.trim()) {
+      alert("Bubble must have a title!");
+      return;
+    }
 
-    // Basic structure to pass data up
-const bubbleData = { title, description, isPublic, thumbnailFile };
-    onCreate(bubbleData);
-    onClose(); // optional: close on create
+    onCreate({ title, description, isPublic, thumbnailFile });
+    onClose(); // Close modal after creation
   };
 
   return (
-   // Inside BubbleModal.js
-<div className="bubbleModalOverlay">
-  <div className="bubbleModalContent">
-    {/* Close Button */}
-    <div className="closeButton" onClick={onClose}>&times;</div>
-    
-    <h2>Create a New Bubble</h2>
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Bubble Name"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
+    <div className="bubble-modal-overlay" onClick={onClose}>
+      <div className="bubble-modal" onClick={(e) => e.stopPropagation()}>
+        
+        <div className="bubble-left">
+          {preview ? (
+            <img src={preview} alt="Thumbnail Preview" />
+          ) : (
+            <p style={{ color: '#777', textAlign: 'center' }}>Upload a thumbnail image</p>
+          )}
+          <input type="file" onChange={handleThumbnailUpload} />
+        </div>
 
-      <textarea
-        placeholder="Description (optional)"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
+        <div className="bubble-right">
+          <h2>Create a New Bubble</h2>
 
-      <label>
-        <input
-          type="checkbox"
-          checked={isPublic}
-          onChange={() => setIsPublic(!isPublic)}
-        />
-        Make Public
-      </label>
+          <input
+            type="text"
+            placeholder="Bubble Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
 
-   {thumbnailPreview && (
-  <img
-    src={thumbnailPreview}
-    alt="Thumbnail Preview"
-  style={{
-  width: '100%',
-  height: '400px',
-  objectFit: 'cover',
-  borderRadius: '10px',
-  marginBottom: '1rem',
-}}
+          <textarea
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
 
-  />
-)}
+          <div className="checkbox-container">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+            <label>Make Public</label>
+          </div>
 
-<input
-  type="file"
-  accept="image/*"
-  onChange={(e) => {
-    const file = e.target.files[0];
-    setThumbnailFile(file);
-    if (file) {
-      setThumbnailPreview(URL.createObjectURL(file));
-    }
-  }}
-/>
-
-
-
-      <div className="modalButtons">
-        <button type="submit">Create</button>
-        <button type="button" onClick={onClose}>Cancel</button>
+          <div className="bubble-buttons">
+            <button className="cancel" onClick={onClose}>Cancel</button>
+            <button className="create" onClick={handleCreate}>Create</button>
+          </div>
+        </div>
+        
       </div>
-    </form>
-  </div>
-</div>
-
+    </div>
   );
 };
 

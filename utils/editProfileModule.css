@@ -1,51 +1,71 @@
 .modalContent {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4); /* dim background */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  z-index: 9999; 
+}
+
+
+.modalContent h2 {
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.modalContent input,
+.modalContent textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.modalContent input:focus,
+.modalContent textarea:focus {
+  border-color: #ff00c8;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 0, 200, 0.3);
+}
+
+.buttonZone {
   display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 9999; /* ensures it's on top */
+  gap: 2rem;
+  margin-top: 1rem;
 }
-  
-  .modalContent input,
-  .modalContent textarea {
-    width: 100%;
-    margin: 13px 0;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .modalContent button {
-    padding: 10px 15px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .modalContent button:hover {
-    background-color: #45a049;
-  }
-    .buttonZone {
-        display: flex;
-        justify-content: center;
-        gap:4rem;
-    }  
+
+.modalContent button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+
+.modalContent button:hover {
+  transform: scale(1.05);
+}
+
+.modalContent button:first-of-type {
+  background-color: #e74c3c; /* red for cancel */
+  color: white;
+}
+
+.modalContent button:last-of-type {
+  background-color: #2ecc71; /* green for save */
+  color: white;
+}

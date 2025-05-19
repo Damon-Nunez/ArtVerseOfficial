@@ -1,88 +1,114 @@
-/* Overlay to dim the background */
-.bubbleModalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  /* Modal box itself */
-  .bubbleModalContent {
-    background-color: #fff; /* White background for the modal */
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px; /* Can adjust depending on preference */
-    max-width: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative; /* To position the close button */
-  }
-  
-  /* Title */
-  .bubbleModalContent h2 {
-    font-weight: bold;
-    color: black;
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Input styling */
-  .bubbleModalContent input,
-  .bubbleModalContent textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  /* Checkbox styling */
-  .bubbleModalContent label {
-    font-size: 16px;
-    margin-bottom: 15px;
-  }
-  
-  /* Modal buttons container */
-  .modalButtons {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .modalButtons button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .modalButtons button[type="submit"] {
-    background-color: #4CAF50; /* Green for create */
-    color: white;
-  }
-  
-  .modalButtons button[type="button"] {
-    background-color: #f44336; /* Red for cancel */
-    color: white;
-  }
-  
-  /* Close button (X) */
-  .closeButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    color: black;
-    cursor: pointer;
-  }
-  
+.bubble-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble-left {
+  width: 50%;
+  background: #f9f9f9;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+.bubble-left img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+}
+
+.bubble-right {
+  width: 50%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bubble-right h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.bubble-right input,
+.bubble-right textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.bubble-right .checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.bubble-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.bubble-buttons button {
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.bubble-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.bubble-buttons .cancel {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.bubble-buttons .create {
+  background-color: #2ecc71;
+  color: white;
+}
+.bubble-modal {
+  background: white;
+  border-radius: 16px;
+  display: flex;
+  width: 90%;
+  max-width: 700px;
+  min-height: 500px; /* 🧱 Taller modal */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 1rem 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.checkbox-container label {
+  font-weight: 500;
+  font-size: 1rem;
+}

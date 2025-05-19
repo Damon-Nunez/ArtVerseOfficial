@@ -570,3 +570,60 @@
   filter: grayscale(40%);
   opacity: 0.85;
 }
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.4); /* semi-transparent */
+  backdrop-filter: blur(8px); /* blur effect */
+  z-index: 998;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #ff00c8;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 0.9s linear infinite;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.bubble-dropdown {
+  position: absolute;
+  top: 100%; /* directly below the icon */
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  padding: 0.5rem 0;
+  z-index: 9999;
+  min-width: 180px;
+  margin-top: 0.5rem;
+}
+
+.bubble-option {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bubble-option:hover {
+  background-color: #f0f0f0;
+  color: #ff00c8;
+}

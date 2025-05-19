@@ -4,7 +4,6 @@ import './StarryBackground.css'; // Import your CSS file
 import { generateStars } from '../utils/generateStars';
 import { generateWhiteStars } from '../utils/generateWhiteStars';
 import Carousel from 'react-bootstrap/Carousel'; // Ensure correct import from react-bootstrap
-import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Custom icons from react-icons
 
 // Import all images from the public folder
@@ -19,17 +18,18 @@ import Img8 from '../public/images/TutCar8.jpg';
 import Img9 from '../public/images/TutCar9.jpg';
 
 function StarryBackground() {
-  const slides = [
-    { imgSrc: Img1 },
-    { imgSrc: Img2 },
-    { imgSrc: Img3 },
-    { imgSrc: Img4 },
-    { imgSrc: Img5 },
-    { imgSrc: Img6 },
-    { imgSrc: Img7 },
-    { imgSrc: Img8 },
-    { imgSrc: Img9 },
-  ];
+ const slides = [
+  { imgSrc: "/images/TutCar1.jpg" },
+  { imgSrc: "/images/TutCar2.jpg" },
+  { imgSrc: "/images/TutCar3.jpg" },
+  { imgSrc: "/images/TutCar4.jpg" },
+  { imgSrc: "/images/TutCar5.jpg" },
+  { imgSrc: "/images/TutCar6.jpg" },
+  { imgSrc: "/images/TutCar7.jpg" },
+  { imgSrc: "/images/TutCar8.jpg" },
+  { imgSrc: "/images/TutCar9.jpg" },
+];
+
 
   return (
     <Row>
@@ -57,19 +57,13 @@ function StarryBackground() {
           >
             {slides.map((slide, index) => (
               <Carousel.Item key={index}>
-                <Image
-                  src={slide.imgSrc}
-                  alt={`Slide ${index + 1}`}
-                  layout="responsive"
-                  width={800}
-                  height={450}
-                  style={{
-                    maxHeight: '40rem',
-                    maxWidth: '30rem',
-                    margin:'auto', // Centers horizontally
-                    alignItems: 'center',     // Centers vertically
-                    objectFit: 'cover',       // Ensures the image fills the container
-                  }}                />
+               <img
+  src={slide.imgSrc}
+  alt={`Slide ${index + 1}`}
+  className="carousel-img"
+  loading='lazy'
+/>
+
               </Carousel.Item>
             ))}
           </Carousel>
