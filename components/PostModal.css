@@ -133,7 +133,7 @@
   transform: scale(1.2);
 }
 .comments-section {
-  max-height: 450px; 
+  max-height: 500px; 
   overflow-y: auto;
 }
 .saveButton {

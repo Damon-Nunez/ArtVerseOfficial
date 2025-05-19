@@ -22,6 +22,8 @@ const PostModal = ({ postId, onClose }) => {
   const [showBubbleModal, setShowBubbleModal] = useState(false);
   const [favorited,setFavorited] = useState(false)
   const [isFavorited,setIsFavorited] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('');
+
 
 
 
@@ -119,8 +121,11 @@ const PostModal = ({ postId, onClose }) => {
       if (!response.ok) throw new Error("Failed to add comment");
   
       const newCommentData = await response.json(); // Assuming the response returns the new comment data
- await fetchComments(); // reuse your existing fetch logic
-      setNewComment(""); // Clear the input
+await fetchComments();
+setNewComment("");
+setSuccessMessage("Comment posted!");
+setTimeout(() => setSuccessMessage(''), 3000);
+
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -437,6 +442,12 @@ const handleLike = async (postId) => {
     )}
 
   </div>
+  {successMessage && (
+  <p style={{ color: 'green', fontWeight: 'bold', marginBottom: '10px' }}>
+    {successMessage}
+  </p>
+)}
+
   <div className="commentBar">
   <input
     type="text"
