@@ -42,7 +42,7 @@ WHERE bp.bubble_id = $1;
     if (result.rows.length > 0) {
       return NextResponse.json({ posts: result.rows }, { status: 200 });
     } else {
-      return NextResponse.json({ message: 'No posts found in this bubble' }, { status: 404 });
+return NextResponse.json({ posts: [] }, { status: 200 });
     }
 
   } catch (error) {

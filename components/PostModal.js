@@ -356,10 +356,15 @@ const handleLike = async (postId) => {
   </div>
 
   <div className="interaction-icon" onClick={() => handleFavorite(postId)}>
-    <CiHeart 
-      className={isFavorited ? "favorited" : "not-favorited"}
-      style={{ fontSize: '2rem', cursor: 'pointer' }}
-    />
+   <CiHeart 
+  className={isFavorited ? "favorited" : "not-favorited"}
+  style={{ fontSize: '2rem', cursor: 'pointer' }}
+  onClick={(e) => {
+    e.stopPropagation();
+    handleFavorite(postId);
+  }}
+/>
+
   </div>
 
   <div className="interaction-icon" onClick={() => setShowDropdown(!showDropdown)}>
