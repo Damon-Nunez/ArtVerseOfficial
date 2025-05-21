@@ -3,8 +3,9 @@ import "./searchBar.css";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { useState } from "react";
 
-const SearchBar = ({ onSearch }) => {
-  const [input, setInput] = useState('');
+const SearchBar = ({ input, setInput, onSearch }) => {
+
+
 
   return (
     <div className="search-bar-container">
@@ -16,9 +17,10 @@ const SearchBar = ({ onSearch }) => {
   value={input}
   onChange={(e) => setInput(e.target.value)}
 onKeyDown={(e) => {
-  if (e.key === 'Enter' && input.trim() !== '') {
-    onSearch(input.trim());
+ if (e.key === 'Enter') {
+    onSearch(input); // Now always calls handleSearch
   }
+  console.log("Search triggered:", input);
 }}
 
 />

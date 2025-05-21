@@ -23,7 +23,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null); // Track which post's dropdown is open
   const [bubbleInfo, setBubbleInfo] = useState([])
   const [filteredPosts, setFilteredPosts] = useState(null);
-
+    const [searchQuery, setSearchQuery] = useState("");
   const postsToRender = filteredPosts || fetchedPosts;
 
 
@@ -141,7 +141,11 @@ fetchBubbleInfo();
           <Navbar/>
         </Col>
         <Col sm={10} md={10} lg={10} className='colFix'>
-<SearchBar onSearch={handleSearch} />
+ <SearchBar
+  input={searchQuery}
+  setInput={setSearchQuery}
+  onSearch={handleSearch}
+/>
         <div className='topBubbleView'>
           <div className='groupMove'>
           <h2 className='bubbleTitle'> {bubbleInfo.title} </h2>

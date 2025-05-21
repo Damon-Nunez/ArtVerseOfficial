@@ -13,7 +13,10 @@ const [defaultPosts, setDefaultPosts] = useState([]);
   const postsToRender = filteredPosts || defaultPosts;
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
+
+  
 
 
 const fetchPosts = async (pageNum) => {
@@ -29,6 +32,7 @@ const fetchPosts = async (pageNum) => {
       setHasMore(false); // 🛑 No more posts to fetch
     } else {
       setDefaultPosts(prev => [...prev, ...data]);
+      console.log(defaultPosts);
     }
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -57,7 +61,11 @@ const handleScroll = () => {
 
 
   const handleSearch = async (query) => {
-    
+    console.log("handleSearch running:", query);
+   if (query.trim() === "") {
+    setFilteredPosts(null);
+    return;
+  } 
   const token = localStorage.getItem("authToken");
   if (!token) {
     console.error("Missing token");
@@ -80,7 +88,8 @@ const handleScroll = () => {
   }
 };
 
-
+console.log("filteredPosts:", filteredPosts);
+console.log("postsToRender:", postsToRender);
   return (
     <div>
       <Row>
@@ -88,7 +97,12 @@ const handleScroll = () => {
           <Navbar />
         </Col>
         <Col sm={10} md={10} lg={10} className="colfix" >
-          <SearchBar onSearch={handleSearch} />
+         <SearchBar
+  input={searchQuery}
+  setInput={setSearchQuery}
+  onSearch={handleSearch}
+/>
+
           <div className="feed-container">
          {loading ? (
   <>

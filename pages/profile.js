@@ -220,6 +220,8 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
   const [showDropdown, setShowDropdown] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [favoritePosts, setFavoritePosts] = useState([]);
+  const [favoritesLoading, setFavoritesLoading] = useState(true);
+
 
 
 
@@ -260,21 +262,17 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
     fetchUserBubbles();
   },
   [])
-
-   useEffect(() => {
+useEffect(() => {
   const fetchFavorites = async () => {
+    setFavoritesLoading(true); // Start loading
     try {
       const token = localStorage.getItem('authToken');
-      if (!token) {
-        console.error("Token is missing!");
-        return;
-      }
+      if (!token) return;
 
       const response = await fetch(`/api/favorites/getUserFavorites`, {
-        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
 
@@ -284,6 +282,8 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
       setFavoritePosts(data.favorites || []);
     } catch (error) {
       console.error("Error fetching favorites:", error);
+    } finally {
+      setFavoritesLoading(false); // Stop loading
     }
   };
 
@@ -291,6 +291,7 @@ const handleCreateBubble = async ({ title, description, isPublic, thumbnailFile 
     fetchFavorites();
   }
 }, [activeTab]);
+
 
 useEffect(() => {
   const handleClickOutside = () => setShowDropdown(null);
@@ -608,7 +609,12 @@ useEffect(() => {
 
 {activeTab === 'favorites' && (
   <div className="feed-container">
-    {favoritePosts.length === 0 ? (
+    {favoritesLoading ? (
+      <>
+        <div className="loader-overlay"></div>
+        <div className="loader"></div>
+      </>
+    ) : favoritePosts.length === 0 ? (
       <p style={{ opacity: 0.6, fontSize: "30px", display:"flex", justifyContent:"center", color:"white"}}>
         No favorites yet.
       </p>
@@ -628,6 +634,7 @@ useEffect(() => {
     )}
   </div>
 )}
+
 
 
   {activeTab === 'bubbles' && (
